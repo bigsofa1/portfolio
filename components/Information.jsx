@@ -1,5 +1,5 @@
 export default function About(){
     return(
-        <p>About</p>
+        <p>Info placeholder</p>
     )
 }

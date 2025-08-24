@@ -2,6 +2,6 @@
 
 export default function Project(){
     return(
-        <p>Project</p> 
+        <p>Project placeholder</p> 
     )
 }

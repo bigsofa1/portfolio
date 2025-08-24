@@ -1,11 +1,17 @@
-export default function Nav(){
+
+
+export default function Nav({ active, onSelect }){
+
     return(
        <nav>
             <ul>
-                <li><a onClick="" href="#">Thomas Chap Vinette</a></li>
-                <li><a href="#">Work</a></li>
-                <li><a href="#">About</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a onClick={() => onSelect("index")} href="#">Thomas Chap Vinette</a></li>
+                {active === "index" ? (
+                <>
+                <li><a onClick={() => onSelect("Info")} href="#">Information</a></li>
+                <li><a onClick={() => onSelect("work")} href="#">Projects</a></li>
+                </>
+                ) : null}
             </ul>
        </nav>
     )

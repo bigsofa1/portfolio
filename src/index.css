@@ -4,11 +4,12 @@
   --base-color-light:#fafafa;
   --base-color-dark:#050505;
   --font-size:20px;
-  --margin:5vw;
+  --margin-x:2%;
   --spacing:1vh;
 }
 
 body{
+  margin: var(--margin-x);
   background-color: var(--base-color-light);
   color: var(--base-color-dark);
   font-family: "Helvetica Neue", Helvetica, Inter, Arial, sans-serif;
@@ -26,29 +27,30 @@ body{
   margin: 0 auto;
 }
 
-/* Row */
+/* row */
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr); /* 12-column grid like Bootstrap */
   gap: var(--spacing) /* gutter space between columns */
 }
 
-/* Column - default spans 1 column */
+
+/* col */
 .col {
   grid-column: span 1;
 }
 
-/* Column span helpers */
+
 .col-2 { grid-column: span 2; }
 .col-3 { grid-column: span 3; }
 .col-4 { grid-column: span 4; }
 .col-6 { grid-column: span 6; }
 .col-8 { grid-column: span 8; }
 .col-12 { grid-column: span 10;}
-/* ... up to .col-12 */
 
 
 nav ul{
+  margin:0;
   list-style-type: none;
   padding-inline-start: 0;
 }
@@ -65,4 +67,8 @@ a{
 
 a:hover{
   color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%)
+}
+
+p{
+  margin: 0 0 var(--spacing) 0;
 }
