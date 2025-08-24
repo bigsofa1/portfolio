@@ -1,68 +1,68 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+
+:root{
+  --base-color-light:#fafafa;
+  --base-color-dark:#050505;
+  --font-size:20px;
+  --margin:5vw;
+  --spacing:1vh;
+}
+
+body{
+  background-color: var(--base-color-light);
+  color: var(--base-color-dark);
+  font-family: "Helvetica Neue", Helvetica, Inter, Arial, sans-serif;
+  font-optical-sizing: auto;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-style: normal;
+  font-size:var(--font-size);
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
+
+/* Container */
+.container {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Row */
+.row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr); /* 12-column grid like Bootstrap */
+  gap: var(--spacing) /* gutter space between columns */
+}
+
+/* Column - default spans 1 column */
+.col {
+  grid-column: span 1;
+}
+
+/* Column span helpers */
+.col-2 { grid-column: span 2; }
+.col-3 { grid-column: span 3; }
+.col-4 { grid-column: span 4; }
+.col-6 { grid-column: span 6; }
+.col-8 { grid-column: span 8; }
+.col-12 { grid-column: span 10;}
+/* ... up to .col-12 */
+
+
+nav ul{
+  list-style-type: none;
+  padding-inline-start: 0;
+}
+
+nav ul li{
+  margin-bottom: var(--spacing);
+}
+
+a{
   text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  color: inherit;
+  transition: color 0.2s;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+a:hover{
+  color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%)
 }
