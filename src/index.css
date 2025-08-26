@@ -59,16 +59,34 @@ nav ul li{
   margin-bottom: var(--spacing);
 }
 
-a{
+button{
+  all:unset;
   text-decoration: inherit;
   color: inherit;
   transition: color 0.2s;
 }
 
-a:hover{
-  color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%)
-}
-
 p{
   margin: 0 0 var(--spacing) 0;
+}
+
+/* keyframes and animations */
+
+nav ul li button {
+  opacity: 0;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+@keyframes fadeIn{
+  from {opacity:0}
+  to {opacity:1}
+}
+
+button:hover{
+  color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%);
+  cursor: pointer;
+}
+
+.nav-unfocus{
+  color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%);
 }
