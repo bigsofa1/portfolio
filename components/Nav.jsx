@@ -10,6 +10,7 @@ export default function Nav({ active, onSelect }){
     const [menuOpen, setMenuOpen] = useState(false)
 
     return(
+    <div className="col-2">
        <nav>
             <ul>
                 {navItems.map((item) => {
@@ -17,14 +18,25 @@ export default function Nav({ active, onSelect }){
                     return(
                         <li key={item.id}>
                             <button className={
-                                hasSelected ? 
-                                (active === item.id ? null : "nav-unfocus") 
-                                : null}
+                                `${hasSelected ? (active === item.id ? null : "item-unfocus") : null} 
+                                ${item.id !== "index" ? "fade-in" : null}`
+                            }
                             onClick={() => {
                                 onSelect(item.id)
-                                setHasSelected(true)
-                                if (item.id === "index") setMenuOpen(true)
-                            }}>
+                                if (item.id === "index"){
+                                    if (menuOpen){
+                                        setMenuOpen(false)
+                                        setHasSelected(false)
+                                    } else{
+                                        setMenuOpen(true)
+                                        setHasSelected(true)
+                                    }
+                                }
+                                else{
+                                    setHasSelected(true)
+                                }
+                            }}
+                            >
                                 {item.label}
                             </button>
                         </li>
@@ -32,5 +44,6 @@ export default function Nav({ active, onSelect }){
                 })}
             </ul>
        </nav>
+       </div>
     )
 }

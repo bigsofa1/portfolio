@@ -4,8 +4,9 @@
   --base-color-light:#fafafa;
   --base-color-dark:#050505;
   --font-size:20px;
-  --margin-x:2%;
+  --margin-x:2vw;
   --spacing:1vh;
+  --line-height: 1.5;
 }
 
 body{
@@ -19,19 +20,11 @@ body{
   font-size:var(--font-size);
 }
 
-
-/* Container */
-.container {
-  width: 90%;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
 /* row */
 .row {
   display: grid;
-  grid-template-columns: repeat(12, 1fr); /* 12-column grid like Bootstrap */
-  gap: var(--spacing) /* gutter space between columns */
+  grid-template-columns: repeat(12, 1fr);
+  gap: var(--spacing) 
 }
 
 
@@ -46,17 +39,18 @@ body{
 .col-4 { grid-column: span 4; }
 .col-6 { grid-column: span 6; }
 .col-8 { grid-column: span 8; }
-.col-12 { grid-column: span 10;}
+.col-12 { grid-column: span 12;}
 
 
-nav ul{
-  margin:0;
+ul{
+  margin: 0 0 var(--line-height) 0;
   list-style-type: none;
   padding-inline-start: 0;
 }
 
-nav ul li{
-  margin-bottom: var(--spacing);
+li{
+  /* margin-bottom: var(--spacing); */
+  line-height: var(--line-height)
 }
 
 button{
@@ -67,14 +61,52 @@ button{
 }
 
 p{
-  margin: 0 0 var(--spacing) 0;
+  margin: 0 0 var(--line-height) 0;
+  line-height: var(--line-height);
 }
 
+a{
+  color:inherit;
+  text-decoration: none;
+  transition: color 0.2s
+}
+
+/* information section */
+
+.information{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap:var(--margin-x);
+  row-gap: var(--spacing);
+}
+
+.information-sociallinks{
+  grid-column: 2;
+}
+
+.information-experience-container{
+  display:grid;
+  grid-template-columns: max-content 1fr;
+}
+
+
+.information-experience-container dt{
+  grid-column: 1;
+}
+
+.information-experience-container dd{
+  grid-column:2;
+  margin: 0 0 var(--spacing) 0;
+}
 /* keyframes and animations */
 
-nav ul li button {
+nav ul li button{
   opacity: 0;
-  animation: fadeIn 0.3s ease forwards;
+  animation: fadeIn 0.5s forwards;
+}
+
+.fade-in{
+    animation: fadeIn 1s forwards;
 }
 
 @keyframes fadeIn{
@@ -82,11 +114,23 @@ nav ul li button {
   to {opacity:1}
 }
 
-button:hover{
-  color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%);
+.fade-in > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.fade-in > *:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.fade-in > *:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+button:hover, a:hover{
+  color: var(--base-color-dark);
   cursor: pointer;
 }
 
-.nav-unfocus{
+.item-unfocus{
   color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%);
 }
