@@ -33,28 +33,25 @@ export default function Information() {
                         </li>
                     ))}
                 </ul>
-
-                <button className={showExperience ? null : "item-unfocus"}
+                <button id="information-experience-button" className={showExperience ? null : "item-unfocus"}
                 onClick={() => (setShowExperience(prev => !prev))}
                 >
                     Currently
                 </button>
-
+                
                 {showExperience && (
-                <div className="information-experience-container">
-                    <dl className="fade-in">
-                        {information.experience.map((item) => (
-                            <React.Fragment key={item.id}>
-                                <dt lang={item.lang || undefined}>
-                                    {item.dt}
-                                </dt>
-                                <dd>
-                                    {item.dd}
-                                </dd>
-                            </React.Fragment>
-                        ))}
-                    </dl>
-                </div>
+                <dl>
+                    {information.experience.map((item) => (
+                        <React.Fragment key={item.id}>
+                            <dt lang={item.lang || undefined} className="fade-in">
+                                {item.dt}
+                            </dt>
+                            <dd className="fade-in">
+                                {item.dd}
+                            </dd>
+                        </React.Fragment>
+                     ))}
+                </dl>
                 )}
             </div>
         </>

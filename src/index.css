@@ -20,19 +20,19 @@ body{
   font-size:var(--font-size);
 }
 
-/* row */
+.margin-bottom{
+  margin-bottom:var(--spacing);
+}
+
 .row {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   gap: var(--spacing) 
 }
 
-
-/* col */
 .col {
   grid-column: span 1;
 }
-
 
 .col-2 { grid-column: span 2; }
 .col-3 { grid-column: span 3; }
@@ -41,7 +41,6 @@ body{
 .col-8 { grid-column: span 8; }
 .col-12 { grid-column: span 12;}
 
-
 ul{
   margin: 0 0 var(--line-height) 0;
   list-style-type: none;
@@ -49,7 +48,6 @@ ul{
 }
 
 li{
-  /* margin-bottom: var(--spacing); */
   line-height: var(--line-height)
 }
 
@@ -80,24 +78,33 @@ a{
   row-gap: var(--spacing);
 }
 
+#information-experience-button{
+  grid-column: 1;
+  justify-self: start;
+  align-self: start;
+}
+
 .information-sociallinks{
   grid-column: 2;
 }
 
-.information-experience-container{
-  display:grid;
-  grid-template-columns: max-content 1fr;
+.information dl{
+  margin:0;
 }
 
-
-.information-experience-container dt{
-  grid-column: 1;
+.information dt,
+.information dd{
+  grid-column: 2;
 }
 
-.information-experience-container dd{
-  grid-column:2;
+.information dd{
   margin: 0 0 var(--spacing) 0;
 }
+
+dl span{
+  grid-column: 2;
+}
+
 /* keyframes and animations */
 
 nav ul li button{
