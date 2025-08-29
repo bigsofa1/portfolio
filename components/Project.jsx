@@ -2,6 +2,8 @@
 
 export default function Project(){
     return(
-        <p>Project placeholder</p> 
+        <section className="projects fade-in">
+            
+        </section>
     )
 }

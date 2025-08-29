@@ -11,14 +11,15 @@ export default function Information() {
 
 
     return(
-        <>
-            <div className="col-8 information fade-in">
+    <section className="information fade-in">
+            <div className={"information-description"}>
                 <p>
                     {information.title}<br/>
                     {information.location}
                 </p>
-
-                <ul className="information-sociallinks">
+            </div>
+            <div className="information-sociallinks">
+                <ul>
                     {information.socialLinks.map((link) => (
                         <li key={link.id}>
                             <a 
@@ -33,27 +34,33 @@ export default function Information() {
                         </li>
                     ))}
                 </ul>
-                <button id="information-experience-button" className={showExperience ? null : "item-unfocus"}
+            </div>
+            <div className={"information-experience-button"}>
+                <button className={showExperience ? null : "item-unfocus"}
                 onClick={() => (setShowExperience(prev => !prev))}
                 >
                     Currently
                 </button>
-                
-                {showExperience && (
+            </div>
+            {showExperience && (
+            <div className="information-experience-list">
                 <dl>
                     {information.experience.map((item) => (
-                        <React.Fragment key={item.id}>
-                            <dt lang={item.lang || undefined} className="fade-in">
-                                {item.dt}
-                            </dt>
-                            <dd className="fade-in">
-                                {item.dd}
-                            </dd>
-                        </React.Fragment>
-                     ))}
+                    <React.Fragment key={item.id}>
+                        <div>
+                        <dt lang={item.lang || undefined} className="0">
+                            {item.dt}
+                        </dt>
+                        <dd className="0">
+                            {item.dd}
+                        </dd>
+                        </div>
+                    </React.Fragment>
+                        ))}
                 </dl>
-                )}
             </div>
-        </>
+            )}
+            
+        </section>
     )
 }

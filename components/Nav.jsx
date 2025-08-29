@@ -10,16 +10,15 @@ export default function Nav({ active, onSelect }){
     const [menuOpen, setMenuOpen] = useState(false)
 
     return(
-    <div className="col-2">
+    <div className="col">
        <nav>
-            <ul>
+            <ul className="fade-in">
                 {navItems.map((item) => {
                     if (item.id !== "index" && !menuOpen) return null
                     return(
                         <li key={item.id}>
                             <button className={
-                                `${hasSelected ? (active === item.id ? null : "item-unfocus") : null} 
-                                ${item.id !== "index" ? "fade-in" : null}`
+                                `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`
                             }
                             onClick={() => {
                                 onSelect(item.id)

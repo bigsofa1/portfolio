@@ -10,10 +10,10 @@ function App() {
 
   return (
     <main>
-      <div className="row">
+      <div className="layout">
         <Nav active={activeSection} onSelect={setActiveSection} />
         {activeSection === "information" && <Information />}
-      {activeSection === "projects" && <Project />}
+        {activeSection === "projects" && <Project />}
       </div>
     </main>
   )
