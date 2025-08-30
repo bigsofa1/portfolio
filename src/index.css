@@ -9,6 +9,11 @@
   --line-height: 1.5;
 }
 
+h1,h2,h3,h4{
+  font-size: inherit;
+  font-weight:inherit;
+}
+
 body{
   margin: var(--margin-x);
   background-color: var(--base-color-light);
@@ -100,6 +105,70 @@ a{
 
 .information dd{
   margin: 0 0 var(--spacing) 0;
+}
+
+/* Projects section */
+
+figure{
+  margin:0;
+}
+
+.projects{
+  display:contents;
+}
+
+.project-container{
+  grid-column:3 / span 2;
+  grid-row:1 / span 2;
+}
+
+.project-details{
+  grid-column:3 / 5;
+  grid-row:auto;
+}
+
+.project-images{
+  grid-column: 3 / 5;
+  grid-row: 2;
+}
+
+.project-images img{
+  width:100%;
+  height:auto;
+  object-fit:cover;
+  margin: 0 0 var(--margin-x) 0;
+  cursor:pointer;
+}
+
+.project-image-caption{
+  grid-column:2;
+}
+
+.image-focus {
+  background-color: var(--base-color-light);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 2;
+  cursor: pointer;
+}
+
+.image-focus img {
+  max-width: 95%;
+  max-height: 80%;
+  object-fit: contain;
+}
+
+.image-focus figcaption{
+  margin-top: var(--spacing);
+  justify-self: left;
+  align-items: left;
 }
 
 /* keyframes and animations */

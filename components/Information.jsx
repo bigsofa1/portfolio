@@ -15,7 +15,7 @@ export default function Information() {
             <div className={"information-description"}>
                 <p>
                     {information.title}<br/>
-                    {information.location}
+                    <span lang="fr">{information.location}</span>
                 </p>
             </div>
             <div className="information-sociallinks">
