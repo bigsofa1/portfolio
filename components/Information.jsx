@@ -2,6 +2,9 @@ import { useState } from "react"
 import information from "../src/data/information"
 import React from "react"
 
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+
 export default function Information() {
     //state to show experience
     const [showExperience, setShowExperience] = useState(false)
@@ -11,7 +14,12 @@ export default function Information() {
 
 
     return(
-    <section className="information fade-in">
+    <motion.section
+      className="information"
+      initial={{ opacity: 0}}
+      animate={{ opacity: 1}}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.5 }}>
             <div className={"information-description"}>
                 <p>
                     {information.title}<br/>
@@ -61,6 +69,6 @@ export default function Information() {
             </div>
             )}
             
-        </section>
+        </motion.section>
     )
 }

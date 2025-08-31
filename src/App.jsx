@@ -4,6 +4,9 @@ import Project from "../components/Project";
 
 import { useState } from 'react';
 
+// eslint-disable-next-line no-unused-vars
+import { AnimatePresence, motion } from "framer-motion";
+
 
 function App() {
   //state for active section
@@ -12,12 +15,12 @@ function App() {
   const [hasSelected, setHasSelected] = useState(false)
   
   return (
-    <main>
-      <div className="layout">
+    <main className="layout">
         <Nav active={activeSection} hasSelected={hasSelected}  setHasSelected={setHasSelected} onSelect={setActiveSection} />
-        {activeSection === "information" && <Information />}
-        {activeSection === "projects" && <Project hasSelected={hasSelected} setHasSelected={setHasSelected}/>}
-      </div>
+        <AnimatePresence mode="wait">
+          {activeSection === "information" && (<Information  key={"information"}/>)}
+          {activeSection === "projects" && (<Project key={"projects"} hasSelected={hasSelected} setHasSelected={setHasSelected}/>)}
+        </AnimatePresence>
     </main>
   )
 }

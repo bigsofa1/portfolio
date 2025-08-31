@@ -1,6 +1,9 @@
 import projectsList from "../src/data/projectsList"
 import { useState } from "react"
 
+// eslint-disable-next-line no-unused-vars
+import { motion } from "framer-motion";
+
 export default function Project({hasSelected}){
     //state for active project
     const [activeProject, setActiveProject] = useState(null)
@@ -14,8 +17,12 @@ export default function Project({hasSelected}){
     const [focusImage, setFocusImage] = useState(null)
 
     return(
-        <>
-            <div className="projects-list fade-in">
+        <motion.section className="projects"
+        initial={{ opacity: 0}}
+        animate={{ opacity: 1}}
+        exit={{ opacity: 0 }}
+        transition={{ duration:0.5 }}>
+            <div className="projects-list ">
                 <ul>
                     {projectsList.map((project) => (
                         <li key={project.id}>
@@ -31,7 +38,7 @@ export default function Project({hasSelected}){
             </div>
             {activeProject && (
                 <>
-                    <div className="project-details fade-in">
+                    <div className="project-details ">
                         <div key={activeProject} className="selected-project">
                             <p>{selectedProject.caption + ", " + selectedProject.year}</p>
                             <p>{selectedProject.description}</p>
@@ -53,7 +60,7 @@ export default function Project({hasSelected}){
                     </div>
 
                     {selectedProject.images?.length > 0 && (
-                        <div className="project-images fade-in">
+                        <div className="project-images ">
                             {selectedProject.images.map((image, i) =>
                            <figure key={i} className="project-figure">
                                 <img onClick={() => setFocusImage(image)} src={image.src} alt={image.label || ""} className="project-image" />
@@ -66,10 +73,10 @@ export default function Project({hasSelected}){
             )}
 
             {focusImage && (
-                <figure className="image-focus fade-in" onClick={() => setFocusImage(null)}>
+                <figure className="image-focus " onClick={() => setFocusImage(null)}>
                     <img src={focusImage.src} alt={focusImage.label || ""}/>
                 </figure>
             )}
-        </>
+        </motion.section>
     )
 }
