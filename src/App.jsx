@@ -4,8 +4,7 @@ import Project from "../components/Project";
 
 import { useState } from 'react';
 
-// eslint-disable-next-line no-unused-vars
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 
 
 function App() {

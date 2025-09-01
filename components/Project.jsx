@@ -1,8 +1,8 @@
 import projectsList from "../src/data/projectsList"
 import { useState } from "react"
 
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+//animation import
+import { MotionSection, MotionDiv, fadeIn, staggerChildren } from "../src/animations"
 
 export default function Project({hasSelected}){
     //state for active project
@@ -13,16 +13,13 @@ export default function Project({hasSelected}){
         (project) => project.id === activeProject
     );
 
+
     //focus image state
     const [focusImage, setFocusImage] = useState(null)
 
     return(
-        <motion.section className="projects"
-        initial={{ opacity: 0}}
-        animate={{ opacity: 1}}
-        exit={{ opacity: 0 }}
-        transition={{ duration:0.5 }}>
-            <div className="projects-list ">
+        <MotionSection className="projects" variants={staggerChildren} initial="hidden" animate="visible">
+            <MotionDiv className="projects-list" variants={fadeIn}>
                 <ul>
                     {projectsList.map((project) => (
                         <li key={project.id}>
@@ -35,14 +32,14 @@ export default function Project({hasSelected}){
                         </li>
                     ))}
                 </ul>
-            </div>
+            </MotionDiv>
             {activeProject && (
                 <>
-                    <div className="project-details ">
-                        <div key={activeProject} className="selected-project">
+                    <MotionDiv className="project-details">
+                        <MotionDiv key={activeProject} className="selected-project" variants={fadeIn}>
                             <p>{selectedProject.caption + ", " + selectedProject.year}</p>
                             <p>{selectedProject.description}</p>
-                        </div>
+                        </MotionDiv>
                         {selectedProject.links?.length > 0 && (
                             <ul className="projects-links">
                             {selectedProject.links.map((link, i) => (
@@ -57,17 +54,17 @@ export default function Project({hasSelected}){
                             ))}
                             </ul>
                         )}
-                    </div>
+                    </MotionDiv>
 
                     {selectedProject.images?.length > 0 && (
-                        <div className="project-images ">
+                        <MotionDiv className="project-images ">
                             {selectedProject.images.map((image, i) =>
                            <figure key={i} className="project-figure">
                                 <img onClick={() => setFocusImage(image)} src={image.src} alt={image.label || ""} className="project-image" />
                                 {image.label && <figcaption className="project-image-caption">{image.label}</figcaption>}
                             </figure>  
                             )}
-                        </div>
+                        </MotionDiv>
                     )}
                 </>
             )}
@@ -77,6 +74,6 @@ export default function Project({hasSelected}){
                     <img src={focusImage.src} alt={focusImage.label || ""}/>
                 </figure>
             )}
-        </motion.section>
+        </MotionSection>
     )
 }

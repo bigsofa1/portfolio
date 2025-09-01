@@ -1,9 +1,8 @@
 import { useState } from "react"
 import information from "../src/data/information"
-import React from "react"
 
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion";
+//animation import
+import { MotionSection, fadeIn, MotionDiv, staggerChildren } from "../src/animations"
 
 export default function Information() {
     //state to show experience
@@ -14,19 +13,14 @@ export default function Information() {
 
 
     return(
-    <motion.section
-      className="information"
-      initial={{ opacity: 0}}
-      animate={{ opacity: 1}}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.5 }}>
-            <div className={"information-description"}>
+    <MotionSection className="information" variants={staggerChildren} initial="hidden" animate="visible">
+            <MotionDiv variants={fadeIn} className={"information-description"}>
                 <p>
                     {information.title}<br/>
                     <span lang="fr">{information.location}</span>
                 </p>
-            </div>
-            <div className="information-sociallinks">
+            </MotionDiv>
+            <MotionDiv variants={fadeIn} className="information-sociallinks">
                 <ul>
                     {information.socialLinks.map((link) => (
                         <li key={link.id}>
@@ -42,33 +36,31 @@ export default function Information() {
                         </li>
                     ))}
                 </ul>
-            </div>
-            <div className={"information-experience-button"}>
+            </MotionDiv>
+            <MotionDiv variants={fadeIn} className={"information-experience-button"}>
                 <button className={showExperience ? null : "item-unfocus"}
                 onClick={() => (setShowExperience(prev => !prev))}
                 >
                     Currently
                 </button>
-            </div>
+            </MotionDiv>
             {showExperience && (
-            <div className="information-experience-list">
+            <MotionDiv variants={staggerChildren} className="information-experience-list">
                 <dl>
                     {information.experience.map((item) => (
-                    <React.Fragment key={item.id}>
-                        <div>
-                        <dt lang={item.lang || undefined} className="0">
-                            {item.dt}
-                        </dt>
-                        <dd className="0">
-                            {item.dd}
-                        </dd>
-                        </div>
-                    </React.Fragment>
+                        <MotionDiv variants={fadeIn} key={item.id} >
+                            <dt lang={item.lang || undefined}>
+                                {item.dt}
+                            </dt>
+                            <dd>
+                                {item.dd}
+                            </dd>
+                        </MotionDiv>
                         ))}
                 </dl>
-            </div>
+            </MotionDiv>
             )}
             
-        </motion.section>
+        </MotionSection>
     )
 }
