@@ -13,7 +13,7 @@ export default function Information() {
 
 
     return(
-    <MotionSection className="information" variants={staggerChildren} initial="hidden" animate="visible">
+    <MotionSection className="information" variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
             <MotionDiv variants={fadeIn} className={"information-description"}>
                 <p>
                     {information.title}<br/>
