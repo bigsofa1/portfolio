@@ -10,23 +10,16 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
     const [menuOpen, setMenuOpen] = useState(false)
 
     return(
-       <nav>
-        
-            <MotionUl
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={fadeIn}>
+        <MotionNav>
+            <MotionUl variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
                 <AnimatePresence>
                     {navItems.map((item) => {
                         if (item.id !== "index" && !menuOpen) return null
                         return(
                         <MotionLi
                             key={item.id}
-                            variants={staggerChildren}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
+                            variants={fadeIn}
+                            initial="hidden" animate="visible" exit="exit"
                         >
                             <MotionButton className={
                                 `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`
@@ -52,6 +45,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                     })}
                     </AnimatePresence>
                 </MotionUl>
-       </nav>
+            
+       </MotionNav>
     )
 }

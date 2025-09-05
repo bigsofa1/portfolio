@@ -3,10 +3,11 @@
 :root{
   --base-color-light:#fafafa;
   --base-color-dark:#050505;
-  --font-size:20px;
-  --margin-x:2vw;
-  --spacing:1vh;
-  --line-height: 1.5;
+  --font-size:clamp(10px, calc(1vw + 1rem), 22px);
+  --margin-x:clamp(1vw, calc(1vw + 1rem), 2.5vw);
+  --spacing:clamp(0.5vh, calc(1vh + 1rem), 2vh);
+  --line-height: clamp(0.75, 1.5, 1.75);
+  --scale: 1;
 }
 
 h1,h2,h3,h4{
@@ -29,34 +30,6 @@ body{
   margin-bottom:var(--spacing);
 }
 
-/* grid config  [+]*/
-
-.layout{
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr;
-  gap: var(--margin-x);
-}
-
-.information, .projects{
-  display:grid;
-  grid-column: 2 / span 2;
-  grid-template-columns: subgrid;
-  gap: var(--margin-x);
-}
-
-.col {
-  grid-column: span 1;
-}
-
-.col-2 { grid-column: span 2; }
-.col-3 { grid-column: span 3; }
-.col-4 { grid-column: span 4; }
-.col-6 { grid-column: span 6; }
-.col-8 { grid-column: span 8; }
-.col-9 { grid-column: span 9;}
-.col-12 { grid-column: span 12;}
-
-/* grid config [-] */
 
 ul{
   margin: 0 0 var(--line-height) 0;
@@ -88,26 +61,8 @@ a{
 
 /* information section */
 
-.information-experience-button{
-  grid-column: 1;
-  justify-self: start;
-  align-self: start;
-}
-
-.information-description{
-  grid-column:1;
-}
-
-.information-sociallinks{
-  grid-column: 2;
-}
-
 .information dl{
   margin:0;
-}
-
-.information-experience-list{
-  grid-column:2;
 }
 
 .information dd{
@@ -120,21 +75,6 @@ figure{
   margin:0;
 }
 
-.project-container{
-  grid-column:1 / span 2;
-  grid-row:1 / span 2;
-}
-
-.project-details{
-  grid-column:2;
-  grid-row:auto;
-}
-
-.project-images{
-  grid-column: 2;
-  grid-row: 2;
-}
-
 .project-images img{
   width:100%;
   height:auto;
@@ -143,8 +83,8 @@ figure{
   cursor:pointer;
 }
 
-.project-image-caption{
-  grid-column:1 / span 2;
+.project-caption{
+  margin-bottom:var(--spacing);
 }
 
 .image-focus {
@@ -176,28 +116,6 @@ figure{
 
 /* keyframes and animations */
 
-.fade-in{
-  animation: fadeIn 1s forwards;
-}
-
- .fade-in > *{
-  opacity: 0;
-  animation: fadeIn 1s forwards;
-}
-
-.fade-in > *:nth-child(1) { animation-delay: 0.1s; }
-.fade-in > *:nth-child(2) { animation-delay: 0.3s; }
-.fade-in > *:nth-child(3) { animation-delay: 0.5s; }
-
-.fade-in > * > *:nth-child(1) { animation-delay: 0.1s; }
-.fade-in > * > *:nth-child(2) { animation-delay: 0.3s; }
-.fade-in > * > *:nth-child(3) { animation-delay: 0.5s; }
-
-@keyframes fadeIn{
-  from {opacity:0}
-  to {opacity:1}
-}
-
 button:hover, a:hover{
   color: var(--base-color-dark);
   cursor: pointer;
@@ -205,4 +123,110 @@ button:hover, a:hover{
 
 .item-unfocus{
   color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%);
+}
+
+/* grid / layout */
+
+/* mobile */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--margin-x);
+}
+
+.information, .projects{
+    display:grid;
+    grid-column: 1 / -1;
+    gap: var(--margin-x);
+    grid-template-columns: 1fr;
+}
+
+nav{
+  grid-column: 1 / span 2;
+  grid-row:1;
+}
+
+.information, .projects {
+  gap: var(--margin-x);
+}
+
+.information-experience-button{
+  grid-column: 1;
+  grid-row:2;
+}
+
+.information-sociallinks{
+  grid-column:2;
+}
+
+.information-experience-list{
+  grid-column:1;
+}
+
+.project-details{
+  grid-row:2;
+}
+
+.project-description{
+  grid-column:1 / -1
+}
+
+/* media queries */
+
+/* desktop */
+@media (min-width: 1024px) {
+
+  .layout {
+    grid-template-columns: 1fr 1fr 2fr;
+  }
+
+  nav{
+    grid-column:1;
+  }
+
+  .information, .projects{
+    display:grid;
+    grid-column: 2 / -1;
+    grid-template-columns: subgrid;
+  }
+
+  .information-description{
+    grid-column: 2;
+  }
+
+  /* Projects section */
+  
+  .project-container{
+    grid-column:1 / -1;
+    grid-row:1 / -1;
+  }
+  .project-details{
+    grid-column:2;
+    grid-row:auto;
+  }
+  .project-images{
+    grid-column: 2;
+    grid-row: 2;
+  }
+  .project-image-caption{
+    grid-column:1 / -1;
+  }
+
+  /* Info section */
+
+  .information-experience-button{
+    grid-column: 1;
+    justify-self: start;
+    align-self: start;
+  }
+  .information-description{
+    grid-column:1;
+  }
+
+  .information-sociallinks{
+    grid-column: 2;
+  }
+  .information-experience-list{
+    grid-column:2;
+  }
 }

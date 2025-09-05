@@ -3,11 +3,11 @@ export const projectsList = [
     title: "Online Portfolio",
     caption: "Web design",
     year: "2025",
-    description:"This website was built using React, mounting content dynamically using conditional rendering.",
+    description:"This website was designed to scale progressively with my studies and to succesfully accompany my design language without imposing upon it. This project was fully developed using React, mounting content dynamically using conditional rendering.",
     links: [
     ]
     },
-    {
+    /*{
     id:2,
     title:"Surfaces",
     caption: "Graphic design",
@@ -20,7 +20,7 @@ export const projectsList = [
         {label: "", src:"public/images/projects/img-grid.png", alt: ""},
         {label: "", src:"public/images/projects/img-grid.png", alt: ""},
     ]
-    },
+    },*/
 ]
 
 export default projectsList

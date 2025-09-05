@@ -2,7 +2,7 @@ import projectsList from "../src/data/projectsList"
 import { useState } from "react"
 
 //animation import
-import { MotionSection, MotionDiv, MotionUl, fadeIn, staggerChildren } from "../src/animations"
+import { MotionSection, MotionDiv, MotionUl, MotionLi, fadeIn, MotionSpan, staggerChildren } from "../src/animations"
 import { AnimatePresence } from "framer-motion"
 
 export default function Project({hasSelected}){
@@ -19,13 +19,13 @@ export default function Project({hasSelected}){
 
     return(
         <MotionSection className="projects" variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
-            <MotionDiv className="projects-list" variants={fadeIn}>
+            <MotionDiv className="projects-list" variants={fadeIn} >
                 <ul>
                     {projectsList.map((project) => (
                         <li key={project.id}>
                             <button 
                             className={`${hasSelected ? (activeProject === project.id ? null : "item-unfocus") : null}`}
-                            onClick={() => setActiveProject(project.id)}
+                            onClick={() => (setActiveProject(prev => prev === project.id ? null : project.id))}
                             >
                                 {project.title}
                             </button>
@@ -34,33 +34,31 @@ export default function Project({hasSelected}){
                 </ul>
             </MotionDiv>
            
+           <AnimatePresence mode="wait">
             {activeProject && (
-                <AnimatePresence 
-                    variant={staggerChildren} 
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
+                <MotionSpan
+                    key={activeProject}
+                    variants={fadeIn}  
                 >
                     <MotionDiv 
                         className="project-details" 
-                        variants={fadeIn} 
-                        key={activeProject} 
+                        variants={fadeIn}    
                     >
-                        <MotionDiv key={activeProject} className="selected-project" variants={fadeIn}>
-                            <p>{selectedProject.caption + ", " + selectedProject.year}</p>
-                            <p>{selectedProject.description}</p>
+                        <MotionDiv className="selected-project" variants={fadeIn} >
+                            <p className="project-caption">{selectedProject.caption + ", " + selectedProject.year}</p>
+                            <p className="project-description">{selectedProject.description}</p>
                         </MotionDiv>
                         {selectedProject.links?.length > 0 && (
-                            <MotionUl className="projects-links" variants={fadeIn}>
+                            <MotionUl className="projects-links" variants={fadeIn} >
                             {selectedProject.links.map((link, i) => (
-                                <li key={i}>
+                                <MotionLi key={i} variants={fadeIn} >
                                     <a 
                                     href={link.url} target="_blank" rel="noopener noreferrer"
                                     className={activeProject ? null : "item-unfocus"}
                                     >
                                         {link.label}
                                     </a>
-                                </li>
+                                </MotionLi>
                             ))}
                             </MotionUl>
                         )}
@@ -69,23 +67,22 @@ export default function Project({hasSelected}){
                     {selectedProject.images?.length > 0 && (
                         <MotionDiv 
                             className="project-images" 
-                            variants={staggerChildren}
-                            initial="hidden"
-                            animate="visible"
+                            variants={fadeIn}
+                            initial="hidden" 
+                            animate="visible" 
                             exit="exit"
                         >
                             {selectedProject.images.map((image, i) =>
-                           <figure key={i} className="project-figure">
-                                <img onClick={() => setFocusImage(image)} src={image.src} alt={image.label || ""} className="project-image" />
-                                {image.label && <figcaption className="project-image-caption">{image.label}</figcaption>}
-                            </figure>  
+                            <MotionFigure key={i} className="project-figure" variants={fadeIn} custom={i}>
+                                    <img onClick={() => setFocusImage(image)} src={image.src} alt={image.label || ""} className="project-image" />
+                                    {image.label && <figcaption className="project-image-caption">{image.label}</figcaption>}
+                                </MotionFigure>  
                             )}
                         </MotionDiv>
-                       
                     )}
-                </AnimatePresence>
+             </MotionSpan>
             )}
-           
+            </AnimatePresence>
             {focusImage && (
                 <figure className="image-focus " onClick={() => setFocusImage(null)}>
                     <img src={focusImage.src} alt={focusImage.label || ""}/>
