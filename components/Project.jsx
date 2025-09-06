@@ -44,7 +44,7 @@ export default function Project({hasSelected}){
                         className="project-details" 
                         variants={fadeIn}    
                     >
-                        <MotionDiv className="selected-project" variants={fadeIn} >
+                        <MotionDiv className="selected-project" variants={fadeIn}  exit="exit">
                             <p className="project-caption">{selectedProject.caption + ", " + selectedProject.year}</p>
                             <p className="project-description">{selectedProject.description}</p>
                         </MotionDiv>

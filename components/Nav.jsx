@@ -19,7 +19,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                         <MotionLi
                             key={item.id}
                             variants={fadeIn}
-                            initial="hidden" animate="visible" exit="exit"
+                            initial="hidden" animate="visible" exit="exit" 
                         >
                             <MotionButton className={
                                 `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`
