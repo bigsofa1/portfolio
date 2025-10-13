@@ -5,5 +5,5 @@ export default defineConfig({
   plugins: [react()],
   // If using a project page, set base to "/<REPO>/".
   // If you will use a custom domain, keep base as "/".
-  base: '/portfolio/',
+  base: '/',
 })

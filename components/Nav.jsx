@@ -19,7 +19,14 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                         <MotionLi
                             key={item.id}
                             variants={fadeIn}
+                            className={"hoverable"}
                             initial="hidden" animate="visible" exit="exit" 
+                            // whileHover={{
+                            // color: "color-mix(in srgb, var(--base-color-dark), black 25%)",
+                            // scale: 1.01,
+                            // opacity: 1,
+                            // transition: { duration: 0.25, ease: "easeOut" },
+                            // }}
                         >
                             <MotionButton className={
                                 `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`

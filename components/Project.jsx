@@ -24,7 +24,7 @@ export default function Project({hasSelected}){
                     {projectsList.map((project) => (
                         <li key={project.id}>
                             <button 
-                            className={`${hasSelected ? (activeProject === project.id ? null : "item-unfocus") : null}`}
+                            className={`hoverable ${hasSelected ? (activeProject === project.id ? null : "item-unfocus") : null}`}
                             onClick={() => (setActiveProject(prev => prev === project.id ? null : project.id))}
                             >
                                 {project.title}
