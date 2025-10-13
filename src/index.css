@@ -115,6 +115,16 @@ figure{
 
 /* keyframes and animations */
 
+.hoverable {
+  transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+}
+
+.hoverable:hover {
+  color: color-mix(in srgb, var(--base-color-dark), black 25%);
+  transform: scale(1.03);
+  opacity: 1;
+}
+
 button:hover, a:hover{
   color: var(--base-color-dark);
   cursor: pointer;

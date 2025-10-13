@@ -24,7 +24,7 @@ export default function Information() {
             <MotionDiv variants={fadeIn} className="information-sociallinks" >
                 <ul>
                     {information.socialLinks.map((link) => (
-                        <li key={link.id}>
+                        <li className={"hoverable"} key={link.id}>
                             <a 
                                 className={hasSelected === link.id ? null : "item-unfocus"}
                                 href={link.url} 
@@ -39,7 +39,7 @@ export default function Information() {
                 </ul>
             </MotionDiv>
             <MotionDiv variants={fadeIn} className={"information-experience-button"}>
-                <button className={showExperience ? null : "item-unfocus"}
+                <button className={`hoverable ${showExperience ? null : "item-unfocus"}`}
                 onClick={() => (setShowExperience(prev => !prev))}
                 >
                     Currently
