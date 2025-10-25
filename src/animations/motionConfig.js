@@ -16,12 +16,28 @@ export const staggerChildren = {
 
 export const fadeIn = {
   hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: { duration: 0.5, ease: "easeInOut", delay: 0.2 }
+  visible: (custom = {}) => {
+    const {
+      delay = 0.2,
+      duration = 0.5,
+      ease = "easeInOut",
+      opacity = 1,
+    } = custom;
+    return {
+      opacity,
+      transition: { duration, ease, delay },
+    };
   },
-  exit: {
-    opacity: 0,
-    transition: { duration: 0.3, ease: "easeIn", delay:  0.1 }
+  exit: (custom = {}) => {
+    const {
+      exitDelay = 0.1,
+      exitDuration = 0.3,
+      exitEase = "easeIn",
+      exitOpacity = 0,
+    } = custom;
+    return {
+      opacity: exitOpacity,
+      transition: { duration: exitDuration, ease: exitEase, delay: exitDelay },
+    };
   },
 };
