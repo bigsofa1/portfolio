@@ -50,6 +50,12 @@ button{
   transition: color 0.2s;
 }
 
+button:focus-visible,
+a:focus-visible{
+  outline: 0.25rem solid var(--base-color-dark);
+  outline-offset: 0.25rem;
+}
+
 p{
   line-height: var(--line-height);
 }
@@ -115,14 +121,28 @@ figure{
 
 /* keyframes and animations */
 
+
 .hoverable {
-  transition: color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+  transition: color 0.25s ease;
 }
 
-.hoverable:hover {
+.hoverable:focus-visible {
   color: color-mix(in srgb, var(--base-color-dark), black 25%);
-  transform: scale(1.03);
-  opacity: 1;
+}
+
+@media (hover: hover) {
+  .hoverable {
+    transition: color 0.25s ease, transform 0.25s ease;
+  }
+
+  .hoverable:hover {
+    color: color-mix(in srgb, var(--base-color-dark), black 25%);
+    transform: scale(1.03);
+  }
+
+  .hoverable:focus-visible {
+    transform: scale(1.03);
+  }
 }
 
 button:hover, a:hover{

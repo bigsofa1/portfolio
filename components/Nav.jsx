@@ -1,20 +1,30 @@
-import { useState } from "react"
+import { useId, useState } from "react"
 import navItems from "../src/data/navitems"
 
 import { AnimatePresence } from "framer-motion";
 import { MotionNav, MotionUl, MotionLi, MotionButton, fadeIn, staggerChildren } from "../src/animations"
 
-export default function Nav({ active, onSelect, hasSelected, setHasSelected }){    
+export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
 
     //state for nav menu opening once index is selected
     const [menuOpen, setMenuOpen] = useState(false)
+    const navigationListId = useId()
 
     return(
-        <MotionNav>
-            <MotionUl variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
+        <MotionNav aria-label="Primary navigation">
+            <MotionUl
+                id={navigationListId}
+                variants={staggerChildren}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+            >
                 <AnimatePresence>
                     {navItems.map((item) => {
-                        if (item.id !== "index" && !menuOpen) return null
+                        const isIndexItem = item.id === "index"
+                        const isActive = active === item.id
+
+                        if (!isIndexItem && !menuOpen) return null
                         return(
                         <MotionLi
                             key={item.id}
@@ -29,12 +39,16 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                             // }}
                         >
                             <MotionButton className={
-                                `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`
+                                `${hasSelected ? (isActive ? null : "item-unfocus") : null}`
                             }
+                            type="button"
+                            aria-current={isActive ? "page" : undefined}
+                            aria-expanded={isIndexItem ? menuOpen : undefined}
+                            aria-controls={isIndexItem ? navigationListId : undefined}
                             variants={fadeIn}
                             onClick={() => {
                                 onSelect(item.id)
-                                if (item.id === "index"){
+                                if (isIndexItem){
                                     if (menuOpen){
                                         setMenuOpen((prev) => !prev)
                                         setHasSelected(false)
