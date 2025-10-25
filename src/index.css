@@ -121,7 +121,7 @@ figure{
 
 .hoverable:hover {
   color: color-mix(in srgb, var(--base-color-dark), black 25%);
-  transform: scale(1.03);
+  transform: scale(1.02);
   opacity: 1;
 }
 
