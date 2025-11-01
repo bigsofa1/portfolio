@@ -7,20 +7,23 @@ export const projectsList = [
     links: [
     ]
     },
-    /*{
-    id:2,
-    title:"Surfaces",
-    caption: "Graphic design",
-    year: "2025",
-    description:"An introspective look into the different surfaces of my appartment using a portable PDF scanner.",
-    links: [
-    ],
-    images: [
-        {label: "", src:"public/images/projects/img-grid.png", alt: ""},
-        {label: "", src:"public/images/projects/img-grid.png", alt: ""},
-        {label: "", src:"public/images/projects/img-grid.png", alt: ""},
-    ]
-    },*/
+    {
+        id:2,
+        title:"Surfaces",
+        caption: "Publication design",
+        year: "2025",
+        description:"Surfaces is an introspective look into the details of my apartment. This project was realized using a portable PDF scanner.",
+        links: [
+        ],
+        images: [
+            {label: "", src:"/images/surfaces/surfaces_2.png", alt: ""},
+            {label: "", src:"/images/surfaces/surfaces_3.png", alt: ""},
+            {label: "", src:"/images/surfaces/surfaces_4.png", alt: ""},
+            {label: "", src:"/images/surfaces/surfaces_5.png", alt: ""},
+            {label: "", src:"/images/surfaces/surfaces_7.png", alt: ""},
+            {label: "", src:"/images/surfaces/surfaces_8.png", alt: ""},
+        ]
+    }
 ]
 
 export default projectsList
