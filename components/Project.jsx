@@ -1,8 +1,9 @@
 import projectsList from "../src/data/projectsList"
 import { useState } from "react"
+import ProjectImages from "./projectImages"
 
 //animation import
-import { MotionSection, MotionDiv, MotionUl, MotionLi, fadeIn, MotionSpan, staggerChildren } from "../src/animations"
+import { fadeIn, staggerChildren } from "../src/animations"
 import { AnimatePresence } from "framer-motion"
 
 export default function Project({hasSelected}){
@@ -14,12 +15,10 @@ export default function Project({hasSelected}){
         (project) => project.id === activeProject
     );
 
-    //focus image state
-    const [focusImage, setFocusImage] = useState(null)
-
     return(
-        <MotionSection className="projects" variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
-            <MotionDiv className="projects-list" variants={fadeIn} >
+        <>
+        <section className="projects" variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
+            <div className="projects-list utility-border-top" variants={fadeIn} >
                 <ul>
                     {projectsList.map((project) => (
                         <li key={project.id}>
@@ -32,62 +31,49 @@ export default function Project({hasSelected}){
                         </li>
                     ))}
                 </ul>
-            </MotionDiv>
+            </div>
            
-           <AnimatePresence mode="wait">
+           <AnimatePresence>
             {activeProject && (
-                <MotionSpan
-                    key={activeProject}
+                <div
+                    className="project-content"
+                    key={`details-${activeProject}`}
                     variants={fadeIn}  
                 >
-                    <MotionDiv 
-                        className="project-details" 
+                    <div 
+                        className="project-details utility-border-top" 
                         variants={fadeIn}    
                     >
-                        <MotionDiv className="selected-project" variants={fadeIn}  exit="exit">
+                        <div className="selected-project" variants={fadeIn}  exit="exit">
                             <p className="project-caption">{selectedProject.caption + ", " + selectedProject.year}</p>
                             <p className="project-description">{selectedProject.description}</p>
-                        </MotionDiv>
+                        </div>
                         {selectedProject.links?.length > 0 && (
-                            <MotionUl className="projects-links" variants={fadeIn} >
+                            <ul className="projects-links" variants={fadeIn} >
                             {selectedProject.links.map((link, i) => (
-                                <MotionLi key={i} variants={fadeIn} >
+                                <li key={i} variants={fadeIn} >
                                     <a 
                                     href={link.url} target="_blank" rel="noopener noreferrer"
                                     className={activeProject ? null : "item-unfocus"}
                                     >
                                         {link.label}
                                     </a>
-                                </MotionLi>
+                                </li>
                             ))}
-                            </MotionUl>
+                            </ul>
                         )}
-                    </MotionDiv>
-
-                    {selectedProject.images?.length > 0 && (
-                        <MotionDiv 
-                            className="project-images" 
-                            variants={fadeIn}
-                            initial="hidden" 
-                            animate="visible" 
-                            exit="exit"
-                        >
-                            {selectedProject.images.map((image, i) =>
-                            <MotionFigure key={i} className="project-figure" variants={fadeIn} custom={i}>
-                                    <img onClick={() => setFocusImage(image)} src={image.src} alt={image.label || ""} className="project-image" />
-                                    {image.label && <figcaption className="project-image-caption">{image.label}</figcaption>}
-                                </MotionFigure>  
-                            )}
-                        </MotionDiv>
-                    )}
-             </MotionSpan>
+                    </div>
+                    
+             </div>
             )}
             </AnimatePresence>
-            {focusImage && (
-                <figure className="image-focus " onClick={() => setFocusImage(null)}>
-                    <img src={focusImage.src} alt={focusImage.label || ""}/>
-                </figure>
+            
+        </section>
+        <AnimatePresence mode="wait">
+            {activeProject && (
+                <ProjectImages key={`gallery-${activeProject}`} images={selectedProject?.images} />
             )}
-        </MotionSection>
+        </AnimatePresence>
+        </>
     )
 }

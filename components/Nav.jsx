@@ -2,7 +2,7 @@ import { useState } from "react"
 import navItems from "../src/data/navitems"
 
 import { AnimatePresence } from "framer-motion";
-import { MotionNav, MotionUl, MotionLi, MotionButton, fadeIn } from "../src/animations"
+import { fadeIn } from "../src/animations"
 
 const navAnimationTiming = (index, total) => {
     const safeTotal = Math.max(total, 1)
@@ -20,10 +20,10 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
     const secondaryNavItems = navItems.filter((item) => item.id !== "index")
 
     return(
-        <MotionNav>
-            <MotionUl>
+        <nav>
+            <ul>
                 {primaryNavItem && (
-                    <MotionLi
+                    <li
                         key={primaryNavItem.id}
                         variants={fadeIn}
                         className={"hoverable"}
@@ -32,7 +32,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                         exit="exit"
                         custom={navAnimationTiming(0, 1)}
                     >
-                        <MotionButton
+                        <button
                             className={
                                 `${hasSelected ? (active === primaryNavItem.id ? null : "item-unfocus") : null}`
                             }
@@ -48,12 +48,12 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                             }}
                         >
                             {primaryNavItem.label}
-                        </MotionButton>
-                    </MotionLi>
+                        </button>
+                    </li>
                 )}
                 <AnimatePresence mode="sync">
                     {menuOpen && secondaryNavItems.map((item, index) => (
-                        <MotionLi
+                        <li
                             key={item.id}
                             variants={fadeIn}
                             className={"hoverable"}
@@ -62,7 +62,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                             exit="exit"
                             custom={navAnimationTiming(index, secondaryNavItems.length)}
                         >
-                            <MotionButton className={
+                            <button className={
                                 `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`
                             }
                             onClick={() => {
@@ -70,12 +70,12 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected }){
                             }}
                             >
                                 {item.label}
-                            </MotionButton>
-                        </MotionLi>
+                            </button>
+                        </li>
                     ))}
                     </AnimatePresence>
-                </MotionUl>
+                </ul>
             
-       </MotionNav>
+       </nav>
     )
 }
