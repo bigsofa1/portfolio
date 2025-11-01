@@ -3,7 +3,7 @@ export const projectsList = [
     title: "Online Portfolio",
     caption: "Web design",
     year: "2025",
-    description:"This website was designed to scale progressively with my studies and to successfully accompany my design language without imposing upon it. This project was fully developed using React, mounting content dynamically using conditional rendering.",
+    description:"Developed entirely in React, this website uses conditional rendering to mount content dynamically. Its design and structure are meant to scale progressively with my studies, complementing my growing design language without constraining it.",
     links: [
     ]
     },
