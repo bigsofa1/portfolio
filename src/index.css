@@ -134,16 +134,16 @@ figure{
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
-  overflow: hidden;
 }
 
 .project-images-carousel{
   display:flex;
   overflow-x:auto;
   overflow-y:hidden;
-  gap:calc((var(--gutter))/2);
+  gap:calc((var(--gutter)));
   -webkit-overflow-scrolling: touch;
   width: 100%;
+  align-items:center;
 }
 
 .project-images-carousel :first-child,
@@ -155,8 +155,11 @@ figure{
   margin-inline: calc(-1 * var(--gutter));
 }
 
+.project-images-bleed .project-images-carousel{
+  padding-inline: var(--gutter);
+}
+
 .project-figure{
-    display:flex;
     flex: 0 0 clamp(16rem, 60vw, 24rem);
     scroll-snap-align: start;
     flex-direction: column;
@@ -182,7 +185,7 @@ figure{
   opacity: 1;
 }
 
-button:hover, a:hover{
+button:hover{
   color: var(--base-color-dark);
   cursor: pointer;
 }
@@ -191,7 +194,15 @@ button:hover, a:hover{
   color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%);
 }
 
- 
+.projects a{
+  text-decoration: underline;
+}
+
+.projects a:hover{
+  background-color:lawngreen;
+  color:var(--base-color-light);
+  transition:none;
+}
 
 /* grid / layout */
 

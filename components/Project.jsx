@@ -46,7 +46,20 @@ export default function Project({hasSelected}){
                     >
                         <div className="selected-project" variants={fadeIn}  exit="exit">
                             <p className="project-caption">{selectedProject.caption + ", " + selectedProject.year}</p>
-                            <p className="project-description">{selectedProject.description}</p>
+                            <p className="project-description">
+                                {selectedProject.description.map((segment, i) => {
+                                if (segment.type === "text") return <span key={i}>{segment.value}</span>;
+                                if (segment.type === "link"){
+                                    return (
+                                        <a key={i} href={segment.url} target="_blank" rel="noopener noreferrer">
+                                            {segment.label}
+                                        </a>
+                                    );
+                                }
+                                if (segment.type === "break") return <br key={i} />;
+                                return null;
+                                })}
+                            </p>
                         </div>
                         {selectedProject.links?.length > 0 && (
                             <ul className="projects-links" variants={fadeIn} >

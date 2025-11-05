@@ -1,9 +1,11 @@
-import { useCallback, useEffect, useState } from "react"
+import { useRef, useCallback, useEffect, useState } from "react"
 import { fadeIn } from "../src/animations"
 
 export default function ProjectImages({ images = [] }){
 
 const [focusIndex, setFocusIndex] = useState(null)
+const scrollThreshold = 75;
+const scrollAccumulator = useRef(0);
 
 const openImage = useCallback(
    (index) => {
@@ -48,6 +50,32 @@ const showNext = useCallback(() => {
   }, [focusIndex, showNext, showPrev, closeImage]);
 
 const focusImage = focusIndex !== null ? images[focusIndex] : null;
+
+useEffect(() => {
+  if (focusIndex === null) return;
+
+  const handleWheel = (event) => {
+    const primaryDelta =
+      Math.abs(event.deltaY) >= Math.abs(event.deltaX)
+        ? event.deltaY
+        : event.deltaX;
+
+    scrollAccumulator.current += primaryDelta;
+
+    if (Math.abs(scrollAccumulator.current) < scrollThreshold) return;
+
+    event.preventDefault();
+    if (scrollAccumulator.current > 0) {
+      showNext();
+    } else {
+      showPrev();
+    }
+    scrollAccumulator.current = 0;
+  };
+
+  window.addEventListener("wheel", handleWheel, { passive: false });
+  return () => window.removeEventListener("wheel", handleWheel);
+}, [focusIndex, showNext, showPrev]);
 
 if  (!images.length) return null;
 return(
