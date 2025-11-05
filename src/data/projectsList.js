@@ -39,7 +39,7 @@ export const projectsList = [
         { type: "text", value: " publications as sample text, forever capturing the fleeting nature of each post." },
         { type: "break" },
         { type: "break" },
-        { type: "text", value: "This project was completed as part of the course “DGX-1031: Typographie et compositions”, guided by professor " },
+        { type: "text", value: "This project was completed as part of the course “DGX-1031: Typographie et compositions”, guided by proffessor " },
         { type: "link", label: "Matthias Kreutzer", url: "https://ourpolitesociety.net/en/info"},
         { type: "text", value: "."}
         ],
