@@ -6,6 +6,8 @@ export default function ProjectImages({ images = [] }){
 const [focusIndex, setFocusIndex] = useState(null)
 const scrollThreshold = 75;
 const scrollAccumulator = useRef(0);
+const touchStartRef = useRef(null);
+const touchThreshold = 40;
 
 const openImage = useCallback(
    (index) => {
@@ -75,6 +77,50 @@ useEffect(() => {
 
   window.addEventListener("wheel", handleWheel, { passive: false });
   return () => window.removeEventListener("wheel", handleWheel);
+}, [focusIndex, showNext, showPrev]);
+
+useEffect(() => {
+  if (focusIndex === null) return;
+
+  const handleTouchStart = (event) => {
+    const touch = event.touches[0];
+    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
+  };
+
+  const handleTouchMove = (event) => {
+    if (!touchStartRef.current) return;
+
+    const touch = event.touches[0];
+    const deltaX = touchStartRef.current.x - touch.clientX;
+    const deltaY = touchStartRef.current.y - touch.clientY;
+    const primaryDelta =
+      Math.abs(deltaX) >= Math.abs(deltaY) ? deltaX : deltaY;
+
+    if (Math.abs(primaryDelta) < touchThreshold) return;
+
+    event.preventDefault();
+    if (primaryDelta > 0) {
+      showNext();
+    } else {
+      showPrev();
+    }
+
+    touchStartRef.current = null;
+  };
+
+  const handleTouchEnd = () => {
+    touchStartRef.current = null;
+  };
+
+  window.addEventListener("touchstart", handleTouchStart, { passive: false });
+  window.addEventListener("touchmove", handleTouchMove, { passive: false });
+  window.addEventListener("touchend", handleTouchEnd);
+
+  return () => {
+    window.removeEventListener("touchstart", handleTouchStart);
+    window.removeEventListener("touchmove", handleTouchMove);
+    window.removeEventListener("touchend", handleTouchEnd);
+  };
 }, [focusIndex, showNext, showPrev]);
 
 if  (!images.length) return null;
