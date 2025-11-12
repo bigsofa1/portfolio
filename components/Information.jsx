@@ -24,9 +24,9 @@ export default function Information() {
             <div variants={fadeIn} className="information-sociallinks utility-border-top" >
                 <ul>
                     {information.socialLinks.map((link) => (
-                        <li className={"hoverable"} key={link.id}>
+                        <li className="hoverable" key={link.id}>
                             <a 
-                                className={hasSelected === link.id ? null : "item-unfocus"}
+                                className={`hoverable ${hasSelected === link.id ? null : "item-unfocus"}`}
                                 href={link.url} 
                                 onClick={() => {setHasSelected(true)}}
                                 target="_blank" 
