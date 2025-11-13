@@ -80,6 +80,52 @@ export const projectsList = [
             {label: "", src:"/images/caution/caution_1-1.jpeg", alt: ""},
             {label: "", src:"/images/caution/caution_4_2.jpeg", alt: ""},
         ]
+    },
+    {
+        id:4,
+        title:"DÉDÉ",
+        caption: "Branding design",
+        year: "2025",
+        description: [
+        { type: "text", value: "DÉDÉ is a branding project for a local fictional deli. The project gives life to the business through visual identity, publication design and social media." },
+        { type: "break" },
+        { type: "break" },
+        { type: "text", value: "The project features a 4-fold brochure that incorporates DÉDÉ’s humorous tone with its discreet visual identity that focuses on the inversion of the brand colours." },
+        { type: "break" },
+        { type: "break" },
+        { type: "text", value: "This project was completed as part of the course “DGX-1021: Design d’expériences visuelles 360”, guided by " },
+        { type: "link", label: "Maya Saikali", url: "https://kitecreative.com/"},
+        { type: "text", value: "."},
+        { type: "break" },
+        { type: "break" },
+        { type: "link", label: "Instagram", url: "https://www.instagram.com/dede_delidequartier"},
+        ],
+        links: [
+        ],
+        images: [
+            {label: "", src:"/images/dede/dede_1.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_2.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_3.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_4.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_5.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_6.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_7.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image1.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image2.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image3.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image4.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image5.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image6.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image7.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image8.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image12.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image13.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image14.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image15.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image16.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image17.jpg", alt: ""},
+            {label: "", src:"/images/dede/dede_image18.jpg", alt: ""},
+        ]
     }
 ]
 
