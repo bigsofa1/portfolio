@@ -9,7 +9,7 @@
 :root{
   --base-color-light:#fafafa;
   --base-color-dark:#050505;
-  --font-size:clamp(8px, calc(1vw + 1rem), 22px);
+  --font-size:clamp(8px, calc(1vw + 1rem), 20px);
   --gutter:clamp(1rem, calc(1.5vw + 1rem), 2rem);
   --line-height: clamp(0.75, 1.5, 1.75);
 }
@@ -37,6 +37,9 @@ body{
   white-space: pre-line;
 }
 
+body::-webkit-scrollbar {
+  display: none;
+}
 
 ul{
   margin:0;
