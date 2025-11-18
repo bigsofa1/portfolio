@@ -1,6 +1,6 @@
 import projectsList from "../src/data/projectsList"
 import { useState } from "react"
-import ProjectImages from "./projectImages"
+import ProjectImages from "./ProjectImages"
 
 //animation import
 import { fadeIn, staggerChildren } from "../src/animations"
