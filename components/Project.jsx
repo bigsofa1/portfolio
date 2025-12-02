@@ -6,12 +6,19 @@ import ProjectImages from "./ProjectImages"
 import { fadeIn, staggerChildren } from "../src/animations"
 import { AnimatePresence } from "framer-motion"
 
-export default function Project({hasSelected}){
+export default function Project({hasSelected, language = "en"}){
     //state for active project
     const [activeProject, setActiveProject] = useState(null)
+    const projects = projectsList.map((project) => {
+        const translation = project.translations?.[language] || project.translations?.en || {};
+        return {
+            ...project,
+            ...translation,
+        };
+    });
 
     // find the selected project
-    const selectedProject = projectsList.find(
+    const selectedProject = projects.find(
         (project) => project.id === activeProject
     );
 
@@ -20,7 +27,7 @@ export default function Project({hasSelected}){
         <section className="projects" variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
             <div className="projects-list utility-border-top" variants={fadeIn} >
                 <ul>
-                    {projectsList.map((project) => (
+                    {projects.map((project) => (
                         <li key={project.id}>
                             <button 
                             className={`hoverable ${hasSelected ? (activeProject === project.id ? null : "item-unfocus") : null}`}
@@ -34,7 +41,7 @@ export default function Project({hasSelected}){
             </div>
            
            <AnimatePresence>
-            {activeProject && (
+            {activeProject && selectedProject && (
                 <div
                     className="project-content"
                     key={`details-${activeProject}`}
@@ -83,7 +90,7 @@ export default function Project({hasSelected}){
             
         </section>
         <AnimatePresence mode="wait">
-            {activeProject && (
+            {activeProject && selectedProject && (
                 <ProjectImages key={`gallery-${activeProject}`} images={selectedProject?.images} />
             )}
         </AnimatePresence>

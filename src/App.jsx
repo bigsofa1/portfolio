@@ -7,7 +7,11 @@ import { useState } from 'react';
 import { AnimatePresence } from "framer-motion";
 
 
+
+
 function App() {
+  const [language, setLanguage] = useState("en")
+
   //state for active section
   const [activeSection, setActiveSection] = useState()
   //state for menu selection focus
@@ -15,10 +19,27 @@ function App() {
   
   return (
     <main className="layout">
-        <Nav active={activeSection} hasSelected={hasSelected}  setHasSelected={setHasSelected} onSelect={setActiveSection} />
+        <button className="language-toggle" onClick={() => {
+            setLanguage(language === "en" ? "fr" : "en")}}>
+            {language === "en" ? "EN" : "FR"}
+        </button>
+        <Nav
+          active={activeSection}
+          hasSelected={hasSelected}
+          setHasSelected={setHasSelected}
+          onSelect={setActiveSection}
+          language={language}
+        />
         <AnimatePresence mode="wait">
-          {activeSection === "information" && (<Information  key={"information"}/>)}
-          {activeSection === "projects" && (<Project key={"projects"} hasSelected={hasSelected} setHasSelected={setHasSelected}/>)}
+          {activeSection === "information" && (<Information key={"information"} language={language} />)}
+          {activeSection === "projects" && (
+            <Project
+              key={"projects"}
+              hasSelected={hasSelected}
+              setHasSelected={setHasSelected}
+              language={language}
+            />
+          )}
         </AnimatePresence>
     </main>
   )

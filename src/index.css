@@ -35,11 +35,17 @@ body{
   font-size:var(--font-size);
   text-wrap:balance;
   white-space: pre-line;
-  hyphens:auto;
 }
 
 body::-webkit-scrollbar {
   display: none;
+}
+
+.language-toggle{
+  z-index:3;
+  position: absolute;
+  bottom:var(--gutter);
+  right: var(--gutter);
 }
 
 ul{
@@ -57,6 +63,26 @@ button{
   text-decoration: inherit;
   color: inherit;
   transition: color 0.2s;
+}
+
+.language-toggle {
+  position: fixed;
+  bottom: var(--gutter);
+  right: var(--gutter);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem; 
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--base-color-dark);
+  border-radius: 999px;
+  background-color: var(--base-color-light);
+  text-align: center;
+  z-index: 2;
+}
+
+.language-toggle:hover{
+  background-color: color-mix(in srgb, var(--base-color-light), black 5%);
 }
 
 p{

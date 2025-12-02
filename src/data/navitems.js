@@ -1,16 +1,32 @@
-export const navItems = [
+export const navItems = {
+  en: [
     {
-    id: "index",
-    label:"Thomas Chap Vinette"
+      id: "index",
+      label: "Thomas Chap Vinette",
     },
     {
-    id: "information",
-    label: "Information",
+      id: "information",
+      label: "Information",
     },
     {
-    id: "projects",
-    label: "Projects",
-    }
-];
+      id: "projects",
+      label: "Projects",
+    },
+  ],
+  fr: [
+    {
+      id: "index",
+      label: "Thomas Chap Vinette",
+    },
+    {
+      id: "information",
+      label: "Information",
+    },
+    {
+      id: "projects",
+      label: "Projets",
+    },
+  ],
+};
 
-export default navItems
+export default navItems;
