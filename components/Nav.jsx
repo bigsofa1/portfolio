@@ -1,18 +1,6 @@
 import { useState } from "react";
 import navItems from "../src/data/navitems";
 
-import { AnimatePresence } from "framer-motion";
-import { fadeIn } from "../src/animations";
-
-
-const navAnimationTiming = (index, total) => {
-    const safeTotal = Math.max(total, 1)
-    return {
-        delay: 0.2 + index * 0.08,
-        exitDelay: Math.max(safeTotal - index - 1, 0) * 0.08,
-    }
-}
-
 export default function Nav({ active, onSelect, hasSelected, setHasSelected, language = "en" }){    
     const items = navItems[language] || navItems.en;
 
@@ -27,12 +15,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                 {primaryNavItem && (
                     <li
                         key={primaryNavItem.id}
-                        variants={fadeIn}
                         className={"hoverable"}
-                        initial="hidden"
-                        animate="visible"
-                        exit="exit"
-                        custom={navAnimationTiming(0, 1)}
                     >
                         <button
                             className={
@@ -53,16 +36,10 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                         </button>
                     </li>
                 )}
-                <AnimatePresence mode="sync">
-                    {menuOpen && secondaryNavItems.map((item, index) => (
+                    {menuOpen && secondaryNavItems.map((item) => (
                         <li
                             key={item.id}
-                            variants={fadeIn}
                             className={"hoverable"}
-                            initial="hidden"
-                            animate="visible"
-                            exit="exit"
-                            custom={navAnimationTiming(index, secondaryNavItems.length)}
                         >
                             <button className={
                                 `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`
@@ -75,7 +52,6 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                             </button>
                         </li>
                     ))}
-                    </AnimatePresence>
                 </ul>
             
        </nav>

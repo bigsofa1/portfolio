@@ -1,5 +1,4 @@
 import { useRef, useCallback, useEffect, useState } from "react"
-import { fadeIn } from "../src/animations"
 
 export default function ProjectImages({ images = [] }){
 
@@ -127,7 +126,10 @@ if  (!images.length) return null;
 return(
     <>
         {focusImage && (
-            <figure className="image-focus" onClick={closeImage}>
+            <figure
+                className="image-focus"
+                onClick={closeImage}
+            >
                 <img src={focusImage.src} alt={focusImage.label || ""}/>
                 <button type="button" className="hoverable image-focus-btn-exit" onClick={closeImage}>x</button>
                 <button type="button" className="hoverable image-focus-btn-prev" onClick={(e) => {e.stopPropagation(); showPrev();}}>&lt;</button>
@@ -143,11 +145,6 @@ return(
                         <figure 
                         key={i} 
                         className="project-figure hoverable" 
-                        variants={fadeIn} 
-                        custom={i} 
-                        initial="hidden" 
-                        animate="visible" 
-                        exit="exit"
                         >
                                 <img onClick={() => openImage(i)} src={image.src} alt={image.label || ""} className="project-image" />
                                 {image.label && <figcaption className="project-image-caption">{image.label}</figcaption>}

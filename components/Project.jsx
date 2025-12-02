@@ -2,10 +2,6 @@ import projectsList from "../src/data/projectsList"
 import { useState } from "react"
 import ProjectImages from "./ProjectImages"
 
-//animation import
-import { fadeIn, staggerChildren } from "../src/animations"
-import { AnimatePresence } from "framer-motion"
-
 export default function Project({hasSelected, language = "en"}){
     //state for active project
     const [activeProject, setActiveProject] = useState(null)
@@ -24,8 +20,10 @@ export default function Project({hasSelected, language = "en"}){
 
     return(
         <>
-        <section className="projects" variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
-            <div className="projects-list utility-border-top" variants={fadeIn} >
+        <section
+            className="projects"
+        >
+            <div className="projects-list utility-border-top">
                 <ul>
                     {projects.map((project) => (
                         <li key={project.id}>
@@ -40,18 +38,15 @@ export default function Project({hasSelected, language = "en"}){
                 </ul>
             </div>
            
-           <AnimatePresence>
             {activeProject && selectedProject && (
                 <div
                     className="project-content"
                     key={`details-${activeProject}`}
-                    variants={fadeIn}  
                 >
                     <div 
                         className="project-details utility-border-top" 
-                        variants={fadeIn}    
                     >
-                        <div className="selected-project" variants={fadeIn}  exit="exit">
+                        <div className="selected-project">
                             <p className="project-caption">{selectedProject.caption + ", " + selectedProject.year}</p>
                             <p className="project-description">
                                 {selectedProject.description.map((segment, i) => {
@@ -69,9 +64,9 @@ export default function Project({hasSelected, language = "en"}){
                             </p>
                         </div>
                         {selectedProject.links?.length > 0 && (
-                            <ul className="projects-links" variants={fadeIn} >
+                            <ul className="projects-links">
                             {selectedProject.links.map((link, i) => (
-                                <li key={i} variants={fadeIn} >
+                                <li key={i}>
                                     <a 
                                     href={link.url} target="_blank" rel="noopener noreferrer"
                                     className={activeProject ? null : "item-unfocus"}
@@ -86,14 +81,11 @@ export default function Project({hasSelected, language = "en"}){
                     
              </div>
             )}
-            </AnimatePresence>
             
         </section>
-        <AnimatePresence mode="wait">
             {activeProject && selectedProject && (
                 <ProjectImages key={`gallery-${activeProject}`} images={selectedProject?.images} />
             )}
-        </AnimatePresence>
         </>
     )
 }

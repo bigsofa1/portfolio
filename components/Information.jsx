@@ -1,10 +1,6 @@
 import { useState } from "react";
 import information from "../src/data/information";
 
-//animation import
-import { fadeIn, staggerChildren } from "../src/animations";
-import { AnimatePresence } from "framer-motion";
-
 export default function Information({ language = "en" }) {
     //state to show experience
     const [showExperience, setShowExperience] = useState(false);
@@ -15,14 +11,14 @@ export default function Information({ language = "en" }) {
 
 
     return(
-        <section className="information" variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
-            <div variants={fadeIn} className={"information-description utility-border-top"}>
+        <section className="information">
+            <div className={"information-description utility-border-top"}>
                 <p>
                     {copy.title}<br/>
                     <span lang="fr">{copy.location}</span>
                 </p>
             </div>
-            <div variants={fadeIn} className="information-sociallinks utility-border-top" >
+            <div className="information-sociallinks utility-border-top" >
                 <ul>
                     {copy.socialLinks.map((link) => (
                         <li className="hoverable" key={link.id}>
@@ -39,19 +35,18 @@ export default function Information({ language = "en" }) {
                     ))}
                 </ul>
             </div>
-            <div variants={fadeIn} className={"information-experience-button utility-border-top"}>
+            <div className={"information-experience-button utility-border-top"}>
                 <button className={`hoverable ${showExperience ? null : "item-unfocus"}`}
                 onClick={() => (setShowExperience(prev => !prev))}
                 >
                     {language === "en" ? (showExperience ? "-" : "+") : (showExperience ? "-" : "+")}
                 </button>
             </div>
-            <AnimatePresence>
             {showExperience && (
-            <div variants={fadeIn} className="information-experience-list utility-border-top" >
-                <dl variants={staggerChildren} initial="hidden" animate="visible" exit="exit">
+            <div className="information-experience-list utility-border-top" >
+                <dl>
                     {copy.experience.map((item) => (
-                        <div variants={fadeIn} key={item.id}>
+                        <div key={item.id}>
                             <dt lang={item.lang || undefined}>
                                 {item.dt}
                             </dt>
@@ -63,7 +58,6 @@ export default function Information({ language = "en" }) {
                 </dl>
             </div>
             )}
-            </AnimatePresence>
         </section>
     )
 }

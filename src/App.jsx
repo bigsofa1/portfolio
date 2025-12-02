@@ -4,10 +4,6 @@ import Project from "../components/Project";
 
 import { useState } from 'react';
 
-import { AnimatePresence } from "framer-motion";
-
-
-
 
 function App() {
   const [language, setLanguage] = useState("en")
@@ -30,17 +26,15 @@ function App() {
           onSelect={setActiveSection}
           language={language}
         />
-        <AnimatePresence mode="wait">
-          {activeSection === "information" && (<Information key={"information"} language={language} />)}
-          {activeSection === "projects" && (
-            <Project
-              key={"projects"}
-              hasSelected={hasSelected}
-              setHasSelected={setHasSelected}
-              language={language}
-            />
-          )}
-        </AnimatePresence>
+        {activeSection === "information" && (<Information key={"information"} language={language} />)}
+        {activeSection === "projects" && (
+          <Project
+            key={"projects"}
+            hasSelected={hasSelected}
+            setHasSelected={setHasSelected}
+            language={language}
+          />
+        )}
     </main>
   )
 }
