@@ -15,10 +15,6 @@ function App() {
   
   return (
     <main className="layout">
-        <button className="language-toggle" onClick={() => {
-            setLanguage(language === "en" ? "fr" : "en")}}>
-            {language === "en" ? "EN" : "FR"}
-        </button>
         <Nav
           active={activeSection}
           hasSelected={hasSelected}
@@ -26,6 +22,15 @@ function App() {
           onSelect={setActiveSection}
           language={language}
         />
+        <button
+          type="button"
+          className="language-toggle"
+          aria-label={language === "en" ? "Switch site language to French" : "Basculer le site en anglais"}
+          onClick={() => {
+            setLanguage(language === "en" ? "fr" : "en")}}
+        >
+            {language === "en" ? "EN" : "FR"}
+        </button>
         {activeSection === "information" && (<Information key={"information"} language={language} />)}
         {activeSection === "projects" && (
           <Project

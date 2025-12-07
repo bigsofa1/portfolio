@@ -16,7 +16,7 @@
 
 ::selection{
   background-color:lawngreen;
-  color:var(--base-color-light);
+  color:#000000;
 }
 
 h1,h2,h3,h4{
@@ -64,6 +64,7 @@ button{
   text-decoration: inherit;
   color: inherit;
   transition: color 0.2s;
+  cursor: pointer;
 }
 
 .language-toggle {
@@ -94,8 +95,9 @@ p{
 a{
   color:inherit;
   text-decoration: none;
-  transition: color 0.2s
+  transition: color 0.2s;
 }
+
 
 /* information section */
 
@@ -205,10 +207,28 @@ figure{
   object-fit: contain; 
 }
 
+.project-image-button{
+  all: unset;
+  display: block;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
+a:focus-visible,
+button:focus-visible {
+  background-color:lawngreen;
+  color:#000000;
+}
+
+.project-image-button:focus-visible{
+  background-color:lawngreen;
+}
+
 /* keyframes and animations */
 
 .hoverable {
-  transition: color;
+  /* transition: color; */
   cursor:pointer;
 }
 
