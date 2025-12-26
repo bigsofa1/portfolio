@@ -1,274 +1,303 @@
-import { useRef, useCallback, useEffect, useState } from "react"
+import {useCallback, useEffect, useMemo, useRef, useState} from "react"
+import {AnimatePresence, LayoutGroup, motion} from "framer-motion"
+import {buildImageUrl} from "../src/lib/imageUrl"
 
-export default function ProjectImages({ images = [], language = "en" }){
+const MotionImg = motion.img
+const MotionFigure = motion.figure
+const MotionDiv = motion.div
 
-const [focusIndex, setFocusIndex] = useState(null)
-const scrollThreshold = 75;
-const scrollAccumulator = useRef(0);
-const touchStartRef = useRef(null);
-const touchThreshold = 40;
-const closeButtonRef = useRef(null);
+export default function ProjectImages({images = [], language = "en"}) {
+    const [focusIndex, setFocusIndex] = useState(null)
+    const [isClosing, setIsClosing] = useState(false)
+    const closeTimerRef = useRef(null)
+    const closeButtonRef = useRef(null)
+    const scrollThreshold = 35
+    const scrollStepSize = 100
+    const scrollAccumulator = useRef(0)
+    const touchStartRef = useRef(null)
+    const touchAccumulator = useRef(0)
+    const touchThreshold = 50
+    const touchStepSize = 130
 
-const openImage = useCallback(
-   (index) => {
-    setFocusIndex(index);
-   },
-   []
-);
+    const normalizedImages = useMemo(() => {
+        return images.map((img, idx) => {
+            const imageSource = img.image || img.asset || img
+            const alt = img.alt || img.label || `Project image ${idx + 1}`
+            return {
+                id: img._id || img.id || img.asset?._ref || idx,
+                image: imageSource,
+                alt,
+                label: img.label,
+                fallbackUrl: img.src || img.srcFull || img.url,
+            }
+        })
+    }, [images])
 
-const closeImage = useCallback(() => {
-    setFocusIndex(null);
-}, []
-);
+    const getImageSrc = useCallback(
+        (imageDoc, {width, height, quality = 85} = {}) =>
+            buildImageUrl(imageDoc?.image, {
+                width,
+                height,
+                quality,
+                fit: "max",
+            }) || imageDoc?.fallbackUrl || "",
+        [],
+    )
 
-const showNext = useCallback(() => {
-    if (!images.length) return;
-    setFocusIndex((prev) => (prev + 1) % images.length);
-  }, [images.length]);
+    const focusImage =
+        focusIndex !== null && normalizedImages.length
+            ? normalizedImages[focusIndex % normalizedImages.length]
+            : null
+    const focusSrc = focusImage ? getImageSrc(focusImage, {width: 2400, quality: 100}) : ""
 
-  const showPrev = useCallback(() => {
-    if (!images.length) return;
-    setFocusIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length]);
+    const openImage = useCallback(
+        (index) => {
+            if (closeTimerRef.current) {
+                clearTimeout(closeTimerRef.current)
+                closeTimerRef.current = null
+            }
+            setIsClosing(false)
+            setFocusIndex(index)
+        },
+        [],
+    )
 
-  useEffect(() => {
-    if (focusIndex === null) return;
+    const closeImage = useCallback(() => {
+        if (focusIndex === null) return
+        setIsClosing(true)
+        closeTimerRef.current = setTimeout(() => {
+            setFocusIndex(null)
+            setIsClosing(false)
+            closeTimerRef.current = null
+        }, 200)
+    }, [focusIndex])
 
-    if (closeButtonRef.current){
-      closeButtonRef.current.focus();
-    }
+    const showNext = useCallback(() => {
+        if (!normalizedImages.length) return
+        setFocusIndex((prev) => (prev === null ? 0 : (prev + 1) % normalizedImages.length))
+    }, [normalizedImages.length])
 
-    const handleKey = (event) => {
-      if (event.key === "ArrowRight") {
-        event.preventDefault();
-        showNext();
-      } else if (event.key === "ArrowLeft") {
-        event.preventDefault();
-        showPrev();
-      } else if (event.key === "Escape") {
-        event.preventDefault();
-        closeImage();
-      }
-    };
+    const showPrev = useCallback(() => {
+        if (!normalizedImages.length) return
+        setFocusIndex((prev) => {
+            if (prev === null) return 0
+            return (prev - 1 + normalizedImages.length) % normalizedImages.length
+        })
+    }, [normalizedImages.length])
 
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, [focusIndex, showNext, showPrev, closeImage]);
+    useEffect(() => {
+        if (focusIndex === null) return
 
-const focusImage = focusIndex !== null ? images[focusIndex] : null;
+        if (closeButtonRef.current) {
+            closeButtonRef.current.focus()
+        }
 
-useEffect(() => {
-  if (focusIndex === null) return;
+        const handleKey = (event) => {
+            if (event.key === "ArrowRight") {
+                event.preventDefault()
+                showNext()
+            } else if (event.key === "ArrowLeft") {
+                event.preventDefault()
+                showPrev()
+            } else if (event.key === "Escape") {
+                event.preventDefault()
+                closeImage()
+            }
+        }
 
-  const handleWheel = (event) => {
-    const primaryDelta =
-      Math.abs(event.deltaY) >= Math.abs(event.deltaX)
-        ? event.deltaY
-        : event.deltaX;
+        window.addEventListener("keydown", handleKey)
+        return () => window.removeEventListener("keydown", handleKey)
+    }, [focusIndex, showNext, showPrev, closeImage])
 
-    scrollAccumulator.current += primaryDelta;
+    useEffect(() => {
+        if (focusIndex === null) return
 
-    if (Math.abs(scrollAccumulator.current) < scrollThreshold) return;
+        const handleWheel = (event) => {
+            const primaryDelta =
+                Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX
 
-    event.preventDefault();
-    if (scrollAccumulator.current > 0) {
-      showNext();
-    } else {
-      showPrev();
-    }
-    scrollAccumulator.current = 0;
-  };
+            scrollAccumulator.current += primaryDelta
 
-  window.addEventListener("wheel", handleWheel, { passive: false });
-  return () => window.removeEventListener("wheel", handleWheel);
-}, [focusIndex, showNext, showPrev]);
+            if (Math.abs(scrollAccumulator.current) < scrollThreshold) return
 
-useEffect(() => {
-  if (focusIndex === null) return;
+            event.preventDefault()
+            const steps = Math.max(1, Math.floor(Math.abs(scrollAccumulator.current) / scrollStepSize))
+            if (scrollAccumulator.current > 0) {
+                for (let i = 0; i < steps; i += 1) showNext()
+            } else {
+                for (let i = 0; i < steps; i += 1) showPrev()
+            }
+            scrollAccumulator.current = 0
+        }
 
-  const handleTouchStart = (event) => {
-    const touch = event.touches[0];
-    touchStartRef.current = { x: touch.clientX, y: touch.clientY };
-  };
+        window.addEventListener("wheel", handleWheel, {passive: false})
+        return () => window.removeEventListener("wheel", handleWheel)
+    }, [focusIndex, showNext, showPrev])
 
-  const handleTouchMove = (event) => {
-    if (!touchStartRef.current) return;
+    useEffect(() => {
+        if (focusIndex === null) return
 
-    const touch = event.touches[0];
-    const deltaX = touchStartRef.current.x - touch.clientX;
-    const deltaY = touchStartRef.current.y - touch.clientY;
-    const primaryDelta =
-      Math.abs(deltaX) >= Math.abs(deltaY) ? deltaX : deltaY;
+        const handleTouchStart = (event) => {
+            if (event.touches.length > 1) {
+                touchStartRef.current = null
+                return
+            }
+            const touch = event.touches[0]
+            touchStartRef.current = {x: touch.clientX, y: touch.clientY}
+        }
 
-    if (Math.abs(primaryDelta) < touchThreshold) return;
+        const handleTouchMove = (event) => {
+            if (event.touches.length > 1) return
+            if (!touchStartRef.current) return
 
-    event.preventDefault();
-    if (primaryDelta > 0) {
-      showNext();
-    } else {
-      showPrev();
-    }
+            const touch = event.touches[0]
+            const deltaX = touchStartRef.current.x - touch.clientX
+            touchAccumulator.current += deltaX
 
-    touchStartRef.current = null;
-  };
+            if (Math.abs(touchAccumulator.current) >= touchThreshold) {
+                event.preventDefault()
+                const steps = Math.max(1, Math.floor(Math.abs(touchAccumulator.current) / touchStepSize))
+                const goNext = touchAccumulator.current > 0
+                for (let i = 0; i < steps; i += 1) {
+                    goNext ? showNext() : showPrev()
+                }
+                touchAccumulator.current = 0
+                touchStartRef.current = {x: touch.clientX, y: touch.clientY}
+            }
+            touchStartRef.current = {x: touch.clientX, y: touch.clientY}
+        }
 
-  const handleTouchEnd = () => {
-    touchStartRef.current = null;
-  };
+        const handleTouchEnd = () => {
+            touchStartRef.current = null
+            touchAccumulator.current = 0
+        }
 
-  window.addEventListener("touchstart", handleTouchStart, { passive: false });
-  window.addEventListener("touchmove", handleTouchMove, { passive: false });
-  window.addEventListener("touchend", handleTouchEnd);
+        window.addEventListener("touchstart", handleTouchStart, {passive: false})
+        window.addEventListener("touchmove", handleTouchMove, {passive: false})
+        window.addEventListener("touchend", handleTouchEnd)
 
-  return () => {
-    window.removeEventListener("touchstart", handleTouchStart);
-    window.removeEventListener("touchmove", handleTouchMove);
-    window.removeEventListener("touchend", handleTouchEnd);
-  };
-}, [focusIndex, showNext, showPrev]);
+        return () => {
+            window.removeEventListener("touchstart", handleTouchStart)
+            window.removeEventListener("touchmove", handleTouchMove)
+            window.removeEventListener("touchend", handleTouchEnd)
+        }
+    }, [focusIndex, showNext, showPrev])
 
-if  (!images.length) return null;
-const closeLabel = language === "fr" ? "Fermer l'image" : "Close image";
+    useEffect(() => {
+        return () => {
+            if (closeTimerRef.current) {
+                clearTimeout(closeTimerRef.current)
+            }
+        }
+    }, [])
 
-const focusNavFirst = () => {
-  const navButton = document.querySelector('[data-nav-button="0"]');
-  if (navButton) {
-    navButton.focus();
-    return true;
-  }
-  return false;
-};
+    if (!normalizedImages.length) return null
+    const closeLabel = language === "fr" ? "Fermer l'image" : "Close image"
 
-const focusProjectLast = () => {
-  const projectButtons = document.querySelectorAll("[data-project-button]");
-  if (!projectButtons.length) return false;
-  const target = projectButtons[projectButtons.length - 1];
-  if (target) {
-    target.focus();
-    return true;
-  }
-  return false;
-};
-
-const focusContentLast = () => {
-  const contentTarget = document.querySelector("[data-content-focus]");
-  if (!contentTarget) return false;
-  const interactive = contentTarget.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
-  if (!interactive.length) return false;
-  const target = interactive[interactive.length - 1];
-  if (target) {
-    target.focus();
-    return true;
-  }
-  return false;
-};
-
-const handleArrowNavigation = (event) => {
-  const { key } = event;
-  const buttons = Array.from(document.querySelectorAll("[data-carousel-button]"));
-  const currentIndex = buttons.indexOf(document.activeElement);
-
-  if (key === "ArrowRight") {
-    event.preventDefault();
-    if (currentIndex >= 0 && currentIndex < buttons.length - 1) {
-      buttons[currentIndex + 1].focus();
-      return;
-    }
-    focusNavFirst();
-    return;
-  }
-
-  if (key === "ArrowLeft") {
-    event.preventDefault();
-    if (currentIndex > 0) {
-      buttons[currentIndex - 1].focus();
-      return;
-    }
-    if (focusContentLast()) return;
-    focusProjectLast();
-    return;
-  }
-
-  if (key === "ArrowDown") {
-    event.preventDefault();
-    focusNavFirst();
-    return;
-  }
-
-  if (key === "ArrowUp") {
-    event.preventDefault();
-    focusProjectLast();
-  }
-};
-
-return(
-    <>
-        {focusImage && (
-            <figure
-                className="image-focus"
-                role="dialog"
-                aria-modal="true"
-                aria-label={focusImage.label || "Expanded project image"}
-                onClick={closeImage}
-            >
-                <img src={focusImage.src} alt={focusImage.alt || focusImage.label || "Project image"}/>
-                <button
-                    type="button"
-                    className="hoverable image-focus-btn-exit"
+    return (
+        <>
+            {focusIndex !== null && focusImage && (
+                <figure
+                    className={`image-focus ${isClosing ? "image-focus--closing" : ""}`}
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label={focusImage.label || "Expanded project image"}
                     onClick={closeImage}
-                    ref={closeButtonRef}
-                    aria-label={closeLabel}
                 >
-                    {language === "fr" ? "Fermer" : "Close"}
-                </button>
-                <button
-                    type="button"
-                    className="hoverable image-focus-btn-prev"
-                    onClick={(e) => {e.stopPropagation(); showPrev();}}
-                    aria-label="Show previous image"
-                >
-                    &lt;
-                </button>
-                <button
-                    type="button"
-                    className="hoverable image-focus-btn-next"
-                    onClick={(e) => {e.stopPropagation(); showNext();}}
-                    aria-label="Show next image"
-                >
-                    &gt;
-                </button>
-            </figure>
-        )}
-
-        {images?.length > 0 && (
-            <div className="project-images">
-                <div className="project-images-bleed" data-carousel-focus onKeyDown={handleArrowNavigation}>
-                    <div className="project-images-carousel">
-                        {images.map((image, i) =>
-                        <figure 
-                        key={i} 
-                        className="project-figure hoverable" 
-                        >
+                    <div className="image-focus__thumbs-row" onClick={(e) => e.stopPropagation()}>
+                        <div className="image-focus__thumbs" role="list">
+                            {normalizedImages.map((img, idx) => (
                                 <button
-                                  type="button"
-                                  className="project-image-button"
-                                  onClick={() => openImage(i)}
-                                  data-carousel-button={i}
-                                  aria-label={image.label ? `Open ${image.label}` : "Open project image"}
+                                    key={img.id}
+                                    type="button"
+                                    className={`image-focus__thumb ${idx === focusIndex ? "is-active" : ""}`}
+                                    onClick={() => setFocusIndex(idx)}
+                                    aria-label={`Go to image ${idx + 1}`}
+                                    role="listitem"
                                 >
-                                  <img
-                                    src={image.src}
-                                    alt={image.alt || image.label || `Project image ${i + 1}`}
-                                    className="project-image"
-                                  />
+                                    <img
+                                        src={getImageSrc(img, {width: 120, quality: 60})}
+                                        alt={img.alt}
+                                    />
                                 </button>
-                                {image.label && <figcaption className="project-image-caption">{image.label}</figcaption>}
-                            </figure>  
-                        )}
+                            ))}
+                        </div>
                     </div>
-                </div>
-            </div>
-        )}
-</>
-);
+                    <img
+                        src={focusSrc}
+                        alt={focusImage.alt || focusImage.label || "Project image"}
+                        className="project-image"
+                    />
+                    <button
+                        type="button"
+                        className="hoverable image-focus-btn-prev"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            showPrev()
+                        }}
+                        aria-label={language === "fr" ? "Image précédente" : "Show previous image"}
+                    >
+                        &lt;
+                    </button>
+                    <button
+                        type="button"
+                        className="hoverable image-focus-btn-next"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            showNext()
+                        }}
+                        aria-label={language === "fr" ? "Image suivante" : "Show next image"}
+                    >
+                        &gt;
+                    </button>
+                    <button
+                        type="button"
+                        className="hoverable image-focus-btn-exit"
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            closeImage()
+                        }}
+                        ref={closeButtonRef}
+                        aria-label={closeLabel}
+                    >
+                        {language === "fr" ? "Fermer" : "Close"}
+                    </button>
+                </figure>
+            )}
+
+            {normalizedImages.length > 0 && (
+                <LayoutGroup>
+                    <div className="project-images">
+                        <AnimatePresence mode="wait" initial={false}>
+                            <MotionDiv
+                                key="carousel-view"
+                                className="project-images-list project-images-list--carousel"
+                                role="list"
+                                initial={{opacity: 0}}
+                                animate={{opacity: 1}}
+                                exit={{opacity: 0}}
+                                transition={{duration: 0.15, ease: "easeOut"}}
+                            >
+                                {normalizedImages.map((img, idx) => (
+                                    <MotionFigure
+                                        key={img.id}
+                                        className="project-figure project-figure--carousel"
+                                        role="listitem"
+                                    >
+                                        <MotionImg
+                                            layoutId={`carousel-${img.id}`}
+                                            onClick={() => openImage(idx)}
+                                            src={getImageSrc(img, {width: 1400, quality: 80})}
+                                            alt={img.alt}
+                                            className="project-image"
+                                        />
+                                    </MotionFigure>
+                                ))}
+                            </MotionDiv>
+                        </AnimatePresence>
+                    </div>
+                </LayoutGroup>
+            )}
+        </>
+    )
 }

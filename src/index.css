@@ -9,7 +9,7 @@
 :root{
   --base-color-light:#fafafa;
   --base-color-dark:#050505;
-  --font-size:1rem;
+  --font-size:14px;
   --gutter:clamp(1rem, calc(1.5vw + 1rem), 2rem);
   --line-height: clamp(0.75, 1.5, 1.75);
 }
@@ -133,12 +133,51 @@ figure{
   justify-content: center;
   align-items: center;
   z-index: 2;
+  cursor: pointer;
 }
 
 .image-focus img {
   max-width: 95%;
   max-height: 80%;
   object-fit: contain;
+  cursor: pointer;
+}
+
+.image-focus__thumbs-row{
+  display: none;
+}
+
+.image-focus__thumbs{
+  display: none;
+}
+
+.image-focus__thumb{
+  padding: 0;
+  border: none;
+  background: none;
+  width: auto;
+  height: auto;
+  max-height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.image-focus__thumb.is-active{
+  transform: scale(1.25);
+}
+
+.image-focus__thumb img{
+  height: 100%;
+  width: auto;
+  max-height: 32px;
+  object-fit: contain;
+  display: block;
+}
+
+.image-focus__thumb:hover{
+  transform: scale(1.05);
 }
 
 .image-focus figcaption{
@@ -166,9 +205,34 @@ figure{
 
 .project-images{
   grid-column:1/-1;
-  width: 100%;
-  max-width: 100%;
+  width: calc(100% + (var(--gutter) * 2));
+  max-width: none;
   box-sizing: border-box;
+  margin-inline: calc(-1 * var(--gutter));
+}
+
+.project-images-list{
+  display:flex;
+  gap:calc(var(--gutter) * 0.5);
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+  align-items:center;
+  padding: 0 var(--gutter);
+  margin: 0;
+  scroll-padding-inline: var(--gutter);
+  scrollbar-width: none;
+}
+
+.project-images-list::-webkit-scrollbar{
+  display:none;
+}
+
+.project-images-list--carousel::before,
+.project-images-list--carousel::after{
+  content:"";
+  flex:0 0 var(--gutter);
 }
 
 .project-images-carousel{
@@ -198,18 +262,28 @@ figure{
     flex: 0 0 clamp(16rem, 60vw, 24rem);
     scroll-snap-align: start;
     flex-direction: column;
+    max-height: clamp(14rem, 40vw, 20rem);
+    display: flex;
+}
+
+.project-figure--carousel{
+  height: clamp(14rem, 40vw, 20rem);
 }
 
 .project-image {
-  flex: 0 0 auto;
+  flex: 1 1 auto;
   max-width: 100%;
-  max-height: 100%;
-  object-fit: contain; 
+  max-height: 90%;
+  object-fit: contain;
+  cursor: pointer;
 }
 
 .project-image-button{
   all: unset;
   display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 100%;
   height: 100%;
   cursor: pointer;
@@ -253,7 +327,6 @@ button:hover{
 
 .projects a:hover{
   background-color:lawngreen;
-  color:var(--base-color-light);
   transition:none;
 }
 
@@ -308,7 +381,7 @@ nav{
 @media (min-width: 1024px) {
 
   :root{
-    --font-size:clamp(10px, calc(1vw + 1rem), 20px);
+    --font-size:clamp(9px, calc(1vw + 1rem - 1px), 19px);
   }
 
   .layout {
@@ -391,4 +464,10 @@ nav{
   right: 0;             
   height: 2px;
   background-color: var(--base-color-dark, currentColor);
+}
+
+@media (max-width: 768px) {
+  .utility-border-top::before{
+    height: 1px;
+  }
 }

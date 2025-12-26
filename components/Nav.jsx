@@ -1,8 +1,28 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import navItems from "../src/data/navitems";
+import { sanityClient } from "../src/lib/sanityClient";
+import { SECTIONS_QUERY } from "../src/lib/queries";
 
 export default function Nav({ active, onSelect, hasSelected, setHasSelected, language = "en" }){    
-    const items = navItems[language] || navItems.en;
+    const fallbackItems = navItems[language] || navItems.en;
+    const [sections, setSections] = useState([]);
+    const [loadError, setLoadError] = useState(null);
+    const sectionItems = useMemo(() => {
+        if (!sections?.length) return null;
+        return sections.map((section) => ({
+            id: section.key,
+            label: language === "fr" ? section.titleFr || section.title : section.title,
+            order: section.order ?? 0,
+        })).sort((a, b) => a.order - b.order);
+    }, [sections, language]);
+    const indexLabel = useMemo(() => {
+        const indexItem = fallbackItems.find((item) => item.id === "index");
+        return indexItem?.label || "Index";
+    }, [fallbackItems]);
+    const items = useMemo(() => {
+        const secondary = sectionItems ?? fallbackItems.filter((item) => item.id !== "index");
+        return [{ id: "index", label: indexLabel }, ...secondary];
+    }, [sectionItems, fallbackItems, indexLabel]);
 
     //state for nav menu opening once index is selected
     const [menuOpen, setMenuOpen] = useState(false);
@@ -32,6 +52,23 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
             setFocusIndex(0);
         }
     }, [menuOpen]);
+
+    useEffect(() => {
+        let isMounted = true;
+        sanityClient.fetch(SECTIONS_QUERY)
+            .then((data) => {
+                if (!isMounted) return;
+                setSections(data || []);
+            })
+            .catch((err) => {
+                if (!isMounted) return;
+                console.error("Failed to load sections from Sanity:", err);
+                setLoadError(err);
+            });
+        return () => {
+            isMounted = false;
+        };
+    }, []);
 
     const focusProjectFirst = () => {
         const projectFirst = document.querySelector('[data-project-button="0"]');

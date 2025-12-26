@@ -1,5 +1,6 @@
-import projectsList from "../src/data/projectsList"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
+import { sanityClient, urlFor } from "../src/lib/sanityClient"
+import { PROJECTS_QUERY } from "../src/lib/queries"
 import ProjectImages from "./ProjectImages"
 
 export default function Project({hasSelected, language = "en"}){
@@ -7,13 +8,67 @@ export default function Project({hasSelected, language = "en"}){
     const [activeProject, setActiveProject] = useState(null)
     const [listFocusIndex, setListFocusIndex] = useState(0)
     const projectButtonRefs = useRef([])
-    const projects = projectsList.map((project) => {
-        const translation = project.translations?.[language] || project.translations?.en || {};
-        return {
-            ...project,
-            ...translation,
-        };
-    });
+    const [projectDocs, setProjectDocs] = useState([])
+    const [loadError, setLoadError] = useState(null)
+
+    const blockContentToSegments = (blocks = []) => {
+        const segments = []
+        blocks.forEach((block) => {
+            if (block._type !== "block" || !block.children) return
+            const markDefs = block.markDefs || []
+            block.children.forEach((child) => {
+                const text = child.text || ""
+                if (!text) return
+                if (child.marks?.length) {
+                    const linkMark = child.marks
+                        .map((markKey) => markDefs.find((def) => def._key === markKey && def._type === "link"))
+                        .find(Boolean)
+                    if (linkMark) {
+                        segments.push({ type: "link", label: text, url: linkMark.href })
+                        return
+                    }
+                }
+                segments.push({ type: "text", value: text })
+            })
+            segments.push({ type: "break" })
+        })
+        while (segments[segments.length - 1]?.type === "break") {
+            segments.pop()
+        }
+        return segments
+    }
+
+    const projects = useMemo(() => {
+        return projectDocs.map((project) => {
+            const translation = project.translations?.[language] || project.translations?.en || {}
+            const yearFromDate = project.publishDate ? project.publishDate.slice(0, 4) : ""
+            return {
+                id: project._id,
+                publishDate: project.publishDate,
+                year: yearFromDate,
+                title: translation.title || project.title || "Untitled project",
+                caption: language === "fr" ? project.type?.titleFr || project.type?.title : project.type?.title,
+                description: blockContentToSegments(translation.description),
+                images:
+                    project.images?.map((img) => {
+                        const builder = img.asset ? urlFor(img.asset) : null
+                        const src = builder
+                            ? builder.width(1600).fit("max").auto("format").quality(80).url()
+                            : img.src
+                        const srcFull = builder
+                            ? builder.width(2400).fit("max").auto("format").quality(100).url()
+                            : src
+                        return {
+                            src,
+                            srcFull,
+                            asset: img.asset,
+                            alt: img.alt,
+                            label: img.label,
+                        }
+                    }) || [],
+            }
+        })
+    }, [projectDocs, language])
 
     // find the selected project
     const selectedProject = projects.find(
@@ -93,6 +148,24 @@ export default function Project({hasSelected, language = "en"}){
         }
     }, [listFocusIndex, projects.length])
 
+    useEffect(() => {
+        let isMounted = true
+        sanityClient
+            .fetch(PROJECTS_QUERY)
+            .then((data) => {
+                if (!isMounted) return
+                setProjectDocs(data || [])
+            })
+            .catch((err) => {
+                if (!isMounted) return
+                setLoadError(err)
+                setProjectDocs([])
+            })
+        return () => {
+            isMounted = false
+        }
+    }, [])
+
     const handleArrowNavigation = (event, index) => {
         if (!projects.length) return
         const { key } = event
@@ -124,6 +197,14 @@ export default function Project({hasSelected, language = "en"}){
         }
     }
 
+    if (loadError) {
+        console.error("Failed to load projects from Sanity:", loadError)
+    }
+
+    const captionLine = (project) => {
+        return [project.caption, project.year].filter(Boolean).join(", ")
+    }
+
     return(
         <>
         <section
@@ -148,6 +229,13 @@ export default function Project({hasSelected, language = "en"}){
                             </button>
                         </li>
                     ))}
+                    {!projects.length && (
+                        <li>
+                            <span className="project-empty">
+                                {language === "fr" ? "Aucun projet trouvé." : "No projects found."}
+                            </span>
+                        </li>
+                    )}
                 </ul>
             </div>
            
@@ -196,7 +284,7 @@ export default function Project({hasSelected, language = "en"}){
                         }}
                     >
                         <div className="selected-project">
-                            <p className="project-caption">{selectedProject.caption + ", " + selectedProject.year}</p>
+                            <p className="project-caption">{captionLine(selectedProject)}</p>
                             <p className="project-description">
                                 {selectedProject.description.map((segment, i) => {
                                 if (segment.type === "text") return <span key={i}>{segment.value}</span>;
