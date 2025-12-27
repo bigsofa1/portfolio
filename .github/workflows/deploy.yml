@@ -26,6 +26,12 @@ jobs:
       - run: npm ci
       # if you don't have a package-lock.json yet, use: npm install
       - run: npm run build
+        env:
+          VITE_SANITY_PROJECT_ID: ${{ secrets.SANITY_PROJECT_ID }}
+          VITE_SANITY_DATASET: ${{ secrets.SANITY_DATASET }}
+          VITE_SANITY_API_VERSION: ${{ secrets.SANITY_API_VERSION }}
+          # Uncomment if your dataset is private
+          # VITE_SANITY_READ_TOKEN: ${{ secrets.SANITY_READ_TOKEN }}
       # SPA fallback so deep links don't 404 on Pages
       - run: cp dist/index.html dist/404.html
       # (Optional) avoid Jekyll processing
