@@ -409,7 +409,7 @@ nav{
 @media (min-width: 1024px) {
 
   :root{
-    --font-size:clamp(8px, calc(1vw + 1rem - 2px), 18px);
+    --font-size:clamp(7px, calc(1vw + 1rem - 3px), 17px);
   }
 
   .layout {
@@ -490,12 +490,15 @@ nav{
   top: 0;
   left: 0;
   right: 0;             
-  height: 2px;
+  height: 1.5px;
   background-color: var(--base-color-dark, currentColor);
 }
 
 @media (max-width: 768px) {
   .utility-border-top::before{
     height: 1px;
+  }
+  body{
+    margin: 0 calc(var(--gutter) * 0.75) 0 calc(var(--gutter) * 0.75);
   }
 }

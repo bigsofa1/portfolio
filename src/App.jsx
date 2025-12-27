@@ -7,6 +7,7 @@ import { useState } from 'react';
 
 function App() {
   const [language, setLanguage] = useState("en")
+  console.log("Design & Technology by Thomas Chap Vinette");
 
   //state for active section
   const [activeSection, setActiveSection] = useState()
