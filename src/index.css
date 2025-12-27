@@ -144,11 +144,37 @@ figure{
 }
 
 .image-focus__thumbs-row{
+  position: absolute;
+  top: calc(var(--gutter) * 0.5);
+  left: 0;
+  right: 0;
+  transform: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: calc(var(--gutter) * 0.25);
+  padding: 0 var(--gutter);
+  box-sizing: border-box;
+}
+
+.image-focus__thumbs{
+  display: flex;
+  gap: calc(var(--gutter) * 0.25);
+  justify-content: center;
+  overflow-x: auto;
+  overflow-y: visible;
+  -webkit-overflow-scrolling: touch;
+  padding: calc(var(--gutter) * 0.25) var(--gutter);
+  width: 100%;
+  margin: 0 auto;
+}
+
+.image-focus__thumbs::-webkit-scrollbar{
   display: none;
 }
 
 .image-focus__thumbs{
-  display: none;
+  scrollbar-width: none;
 }
 
 .image-focus__thumb{
@@ -157,10 +183,11 @@ figure{
   background: none;
   width: auto;
   height: auto;
-  max-height: 32px;
+  max-height: 40px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
@@ -171,13 +198,13 @@ figure{
 .image-focus__thumb img{
   height: 100%;
   width: auto;
-  max-height: 32px;
+  max-height: 40px;
   object-fit: contain;
   display: block;
 }
 
 .image-focus__thumb:hover{
-  transform: scale(1.05);
+  transform: scale(1.25);
 }
 
 .image-focus figcaption{
@@ -187,20 +214,20 @@ figure{
 
 .image-focus-btn-exit{
   position:absolute;
- top:var(--gutter);
- right:var(--gutter); 
+  bottom: var(--gutter);
+  right: calc(var(--gutter) * 3);
 }
 
 .image-focus-btn-prev{
   position:absolute;
- top:20%;
- right:var(--gutter); 
+  bottom: var(--gutter);
+  left: var(--gutter);
 }
 
 .image-focus-btn-next{
   position:absolute;
- top:25%;
- right:var(--gutter); 
+  bottom: var(--gutter);
+  right: var(--gutter);
 }
 
 .project-images{

@@ -11,6 +11,7 @@ export default function ProjectImages({images = [], language = "en"}) {
     const [isClosing, setIsClosing] = useState(false)
     const closeTimerRef = useRef(null)
     const closeButtonRef = useRef(null)
+    const thumbRefs = useRef([])
     const scrollThreshold = 35
     const scrollStepSize = 100
     const scrollAccumulator = useRef(0)
@@ -61,6 +62,13 @@ export default function ProjectImages({images = [], language = "en"}) {
         },
         [],
     )
+
+    useEffect(() => {
+        const thumb = focusIndex !== null ? thumbRefs.current[focusIndex] : null
+        if (thumb && typeof thumb.scrollIntoView === "function") {
+            thumb.scrollIntoView({behavior: "smooth", inline: "center", block: "nearest"})
+        }
+    }, [focusIndex])
 
     const closeImage = useCallback(() => {
         if (focusIndex === null) return
@@ -209,6 +217,9 @@ export default function ProjectImages({images = [], language = "en"}) {
                             {normalizedImages.map((img, idx) => (
                                 <button
                                     key={img.id}
+                                    ref={(el) => {
+                                        thumbRefs.current[idx] = el
+                                    }}
                                     type="button"
                                     className={`image-focus__thumb ${idx === focusIndex ? "is-active" : ""}`}
                                     onClick={() => setFocusIndex(idx)}
