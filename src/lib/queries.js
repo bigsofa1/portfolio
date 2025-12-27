@@ -3,6 +3,8 @@ import groq from 'groq'
 export const PROJECTS_QUERY = groq`*[_type == "project"] | order(publishDate desc){
   _id,
   publishDate,
+  designTypes[]->{title, titleFr, "key": value.current},
+  // legacy single type support
   type->{title, titleFr, "key": value.current},
   images[]{
     alt,

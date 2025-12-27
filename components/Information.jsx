@@ -202,7 +202,6 @@ export default function Information({ language = "en" }) {
         >
             <div className={"information-description utility-border-top"}>
                 <p>
-                    {copy.title}<br/>
                     <span lang="fr">{copy.location}</span>
                 </p>
             </div>

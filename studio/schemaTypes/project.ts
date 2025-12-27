@@ -19,12 +19,17 @@ export const project = defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
-      name: 'type',
+      name: 'designTypes',
       title: 'Type of design',
-      type: 'reference',
-      to: [{type: 'designType'}],
-      options: {disableNew: false},
-      validation: (Rule) => Rule.required(),
+      type: 'array',
+      of: [
+        defineArrayMember({
+          type: 'reference',
+          to: [{type: 'designType'}],
+          options: {disableNew: false},
+        }),
+      ],
+      validation: (Rule) => Rule.min(1).required(),
     }),
     defineField({
       name: 'images',

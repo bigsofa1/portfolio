@@ -42,12 +42,21 @@ export default function Project({hasSelected, language = "en"}){
         return projectDocs.map((project) => {
             const translation = project.translations?.[language] || project.translations?.en || {}
             const yearFromDate = project.publishDate ? project.publishDate.slice(0, 4) : ""
+            const designTypes =
+                project.designTypes?.length
+                    ? project.designTypes
+                    : project.type
+                    ? [project.type]
+                    : []
+            const designTypeLabel = (type) =>
+                language === "fr" ? type?.titleFr || type?.title : type?.title
+            const caption = designTypes.map(designTypeLabel).filter(Boolean).join(", ")
             return {
                 id: project._id,
                 publishDate: project.publishDate,
                 year: yearFromDate,
                 title: translation.title || project.title || "Untitled project",
-                caption: language === "fr" ? project.type?.titleFr || project.type?.title : project.type?.title,
+                caption,
                 description: blockContentToSegments(translation.description),
                 images:
                     project.images?.map((img) => {

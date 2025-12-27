@@ -1,7 +1,6 @@
 export const information = {
   en:{
     location: "Montréal, Québec",
-    title: "Designer",
     socialLinks: [
       { id: 1, label: "Are.na", url: "https://www.are.na/thomas-chap-vinette" },
       { id: 2, label: "LinkedIn", url: "https://www.linkedin.com/in/thomaschapvinette/" },
@@ -15,7 +14,6 @@ export const information = {
   },
   fr:{
     location: "Montréal, Québec",
-    title: "Designer",
     socialLinks: [
       { id: 1, label: "Are.na", url: "https://www.are.na/thomas-chap-vinette" },
       { id: 2, label: "LinkedIn", url: "https://www.linkedin.com/in/thomaschapvinette/" },
