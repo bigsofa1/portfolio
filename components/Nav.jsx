@@ -25,7 +25,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
     }, [sectionItems, fallbackItems, indexLabel]);
 
     //state for nav menu opening once index is selected
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [menuOpen, setMenuOpen] = useState(true);
     const [focusIndex, setFocusIndex] = useState(0);
     const [allowAutoFocus, setAllowAutoFocus] = useState(false);
     const primaryNavItem = items.find((item) => item.id === "index");
@@ -162,13 +162,8 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                             onKeyDown={(event) => handleArrowNavigation(event, 0)}
                             onClick={() => {
                                 onSelect(primaryNavItem.id);
-                                if (menuOpen){
-                                    setMenuOpen(false);
-                                    setHasSelected(false);
-                                } else{
-                                    setMenuOpen(true);
-                                    setHasSelected(true);
-                                }
+                                setMenuOpen(true);
+                                setHasSelected(true);
                             }}
                         >
                             {primaryNavItem.label}

@@ -79,6 +79,16 @@ export default function Project({hasSelected, language = "en"}){
         })
     }, [projectDocs, language])
 
+    const projectsByYear = useMemo(() => {
+        const groups = {}
+        projects.forEach((project, index) => {
+            const year = project.year || "—"
+            if (!groups[year]) groups[year] = []
+            groups[year].push({ ...project, flatIndex: index })
+        })
+        return Object.entries(groups).sort(([a], [b]) => Number(b) - Number(a))
+    }, [projects])
+
     // find the selected project
     const selectedProject = projects.find(
         (project) => project.id === activeProject
@@ -221,21 +231,28 @@ export default function Project({hasSelected, language = "en"}){
         >
             <div className="projects-list utility-border-top">
                 <ul>
-                    {projects.map((project, index) => (
-                        <li key={project.id}>
-                            <button 
-                            className={`hoverable ${hasSelected ? (activeProject === project.id ? null : "item-unfocus") : null}`}
-                            type="button"
-                            aria-expanded={activeProject === project.id}
-                            aria-controls={`project-panel-${project.id}`}
-                            tabIndex={listFocusIndex === index ? 0 : -1}
-                            data-project-button={index}
-                            ref={(el) => { projectButtonRefs.current[index] = el }}
-                            onKeyDown={(event) => handleArrowNavigation(event, index)}
-                            onClick={() => (setActiveProject(prev => prev === project.id ? null : project.id))}
-                            >
-                                {project.title}
-                            </button>
+                    {projectsByYear.map(([year, yearProjects]) => (
+                        <li key={year} className="year-group">
+                            <span className="year-label">{year}</span>
+                            <ul>
+                                {yearProjects.map((project) => (
+                                    <li key={project.id}>
+                                        <button
+                                        className={`hoverable ${hasSelected ? (activeProject === project.id ? null : "item-unfocus") : null}`}
+                                        type="button"
+                                        aria-expanded={activeProject === project.id}
+                                        aria-controls={`project-panel-${project.id}`}
+                                        tabIndex={listFocusIndex === project.flatIndex ? 0 : -1}
+                                        data-project-button={project.flatIndex}
+                                        ref={(el) => { projectButtonRefs.current[project.flatIndex] = el }}
+                                        onKeyDown={(event) => handleArrowNavigation(event, project.flatIndex)}
+                                        onClick={() => setActiveProject(prev => prev === project.id ? null : project.id)}
+                                        >
+                                            {project.title}
+                                        </button>
+                                    </li>
+                                ))}
+                            </ul>
                         </li>
                     ))}
                     {!projects.length && (

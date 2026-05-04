@@ -10,9 +10,9 @@ function App() {
   console.log("Design & Technology by Thomas Chap Vinette");
 
   //state for active section
-  const [activeSection, setActiveSection] = useState()
+  const [activeSection, setActiveSection] = useState("index")
   //state for menu selection focus
-  const [hasSelected, setHasSelected] = useState(false)
+  const [hasSelected, setHasSelected] = useState(true)
   
   return (
     <main className="layout">

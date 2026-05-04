@@ -365,6 +365,20 @@ button:hover{
   color:color-mix(in srgb, var(--base-color-dark) 50%, white 2%);
 }
 
+.year-label{
+  pointer-events: none;
+  user-select: none;
+}
+
+.year-group {
+  margin-bottom: 0.5em;
+}
+
+.year-group ul li {
+  margin-bottom: 0.15em;
+  margin-left: 1em;
+}
+
 .projects a{
   text-decoration: underline;
 }
