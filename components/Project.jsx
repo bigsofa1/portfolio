@@ -247,7 +247,7 @@ export default function Project({hasSelected, language = "en"}){
                                         data-project-button={project.flatIndex}
                                         ref={(el) => { projectButtonRefs.current[project.flatIndex] = el }}
                                         onKeyDown={(event) => handleArrowNavigation(event, project.flatIndex)}
-                                        onClick={() => setActiveProject(prev => prev === project.id ? null : project.id)}
+                                        onClick={() => setActiveProject(project.id)}
                                         >
                                             {project.title}
                                         </button>
