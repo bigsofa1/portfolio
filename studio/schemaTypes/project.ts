@@ -53,6 +53,17 @@ export const project = defineType({
       ],
     }),
     defineField({
+      name: 'figmaUrl',
+      title: 'Figma prototype URL',
+      description: 'Paste the embed URL from Figma → Share → Copy link (embed)',
+      type: 'url',
+      validation: (Rule) =>
+        Rule.uri({scheme: ['https']}).custom((url) => {
+          if (!url) return true
+          return url.includes('figma.com') ? true : 'Must be a figma.com URL'
+        }),
+    }),
+    defineField({
       name: 'translations',
       title: 'Translations',
       type: 'object',

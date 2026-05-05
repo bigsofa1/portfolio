@@ -57,6 +57,7 @@ export default function Project({hasSelected, language = "en"}){
                 year: yearFromDate,
                 title: translation.title || project.title || "Untitled project",
                 caption,
+                figmaUrl: project.figmaUrl || null,
                 description: blockContentToSegments(translation.description),
                 images:
                     project.images?.map((img) => {
@@ -332,6 +333,14 @@ export default function Project({hasSelected, language = "en"}){
                                 })}
                             </p>
                         </div>
+                        {selectedProject.figmaUrl && (
+                            <iframe
+                                className="figma-embed"
+                                src={selectedProject.figmaUrl}
+                                allowFullScreen
+                                title={`${selectedProject.title} prototype`}
+                            />
+                        )}
                         {selectedProject.links?.length > 0 && (
                             <ul className="projects-links">
                             {selectedProject.links.map((link, i) => (

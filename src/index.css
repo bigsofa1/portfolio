@@ -379,6 +379,13 @@ button:hover{
   margin-left: 1em;
 }
 
+.figma-embed {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border: none;
+  margin-top: var(--gutter);
+}
+
 .projects a{
   text-decoration: underline;
 }
