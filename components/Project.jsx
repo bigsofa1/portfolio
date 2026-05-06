@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import { sanityClient, urlFor } from "../src/lib/sanityClient"
 import { PROJECTS_QUERY } from "../src/lib/queries"
 import ProjectImages from "./ProjectImages"
 
-export default function Project({hasSelected, language = "en"}){
-    //state for active project
-    const [activeProject, setActiveProject] = useState(null)
+export default function Project({ language = "en" }){
+    const { slug } = useParams()
+    const navigate = useNavigate()
+
     const [listFocusIndex, setListFocusIndex] = useState(0)
     const projectButtonRefs = useRef([])
     const [projectDocs, setProjectDocs] = useState([])
@@ -53,6 +55,7 @@ export default function Project({hasSelected, language = "en"}){
             const caption = designTypes.map(designTypeLabel).filter(Boolean).join(", ")
             return {
                 id: project._id,
+                slug: project.slug,
                 publishDate: project.publishDate,
                 year: yearFromDate,
                 title: translation.title || project.title || "Untitled project",
@@ -90,10 +93,9 @@ export default function Project({hasSelected, language = "en"}){
         return Object.entries(groups).sort(([a], [b]) => Number(b) - Number(a))
     }, [projects])
 
-    // find the selected project
-    const selectedProject = projects.find(
-        (project) => project.id === activeProject
-    );
+    const selectedProject = slug
+        ? projects.find((p) => p.slug === slug) ?? null
+        : null
 
     const focusNavFirst = () => {
         const navButton = document.querySelector('[data-nav-button="0"]')
@@ -239,15 +241,15 @@ export default function Project({hasSelected, language = "en"}){
                                 {yearProjects.map((project) => (
                                     <li key={project.id}>
                                         <button
-                                        className={`hoverable ${hasSelected ? (activeProject === project.id ? null : "item-unfocus") : null}`}
+                                        className={`hoverable ${selectedProject?.id === project.id ? null : "item-unfocus"}`}
                                         type="button"
-                                        aria-expanded={activeProject === project.id}
+                                        aria-expanded={selectedProject?.id === project.id}
                                         aria-controls={`project-panel-${project.id}`}
                                         tabIndex={listFocusIndex === project.flatIndex ? 0 : -1}
                                         data-project-button={project.flatIndex}
                                         ref={(el) => { projectButtonRefs.current[project.flatIndex] = el }}
                                         onKeyDown={(event) => handleArrowNavigation(event, project.flatIndex)}
-                                        onClick={() => setActiveProject(project.id)}
+                                        onClick={() => navigate(`/projects/${project.slug}`)}
                                         >
                                             {project.title}
                                         </button>
@@ -265,16 +267,16 @@ export default function Project({hasSelected, language = "en"}){
                     )}
                 </ul>
             </div>
-           
-            {activeProject && selectedProject && (
+
+            {selectedProject && (
                 <div
                     className="project-content"
-                    key={`details-${activeProject}`}
-                    id={`project-panel-${activeProject}`}
+                    key={`details-${selectedProject.id}`}
+                    id={`project-panel-${selectedProject.id}`}
                     aria-live="polite"
                 >
-                    <div 
-                        className="project-details utility-border-top" 
+                    <div
+                        className="project-details utility-border-top"
                         data-content-focus
                         onKeyDown={(event) => {
                             const { key } = event
@@ -345,9 +347,9 @@ export default function Project({hasSelected, language = "en"}){
                             <ul className="projects-links">
                             {selectedProject.links.map((link, i) => (
                                 <li key={i}>
-                                    <a 
+                                    <a
                                     href={link.url} target="_blank" rel="noopener noreferrer"
-                                    className={activeProject ? null : "item-unfocus"}
+                                    className={selectedProject ? null : "item-unfocus"}
                                     onKeyUp={handleSpaceActivate}
                                     >
                                         {link.label}
@@ -357,13 +359,13 @@ export default function Project({hasSelected, language = "en"}){
                             </ul>
                         )}
                     </div>
-                    
+
              </div>
             )}
-            
+
         </section>
-            {activeProject && selectedProject && (
-                <ProjectImages key={`gallery-${activeProject}`} images={selectedProject?.images} language={language} />
+            {selectedProject && (
+                <ProjectImages key={`gallery-${selectedProject.id}`} images={selectedProject?.images} language={language} />
             )}
         </>
     )

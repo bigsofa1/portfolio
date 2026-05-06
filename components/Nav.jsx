@@ -1,9 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import navItems from "../src/data/navitems";
 import { sanityClient } from "../src/lib/sanityClient";
 import { SECTIONS_QUERY } from "../src/lib/queries";
 
-export default function Nav({ active, onSelect, hasSelected, setHasSelected, language = "en" }){    
+export default function Nav({ language = "en" }){
+    const location = useLocation();
+    const navigate = useNavigate();
+
     const fallbackItems = navItems[language] || navItems.en;
     const [sections, setSections] = useState([]);
     const [loadError, setLoadError] = useState(null);
@@ -23,6 +27,13 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
         const secondary = sectionItems ?? fallbackItems.filter((item) => item.id !== "index");
         return [{ id: "index", label: indexLabel }, ...secondary];
     }, [sectionItems, fallbackItems, indexLabel]);
+
+    const isActive = (id) =>
+        id === "index"
+            ? location.pathname === "/"
+            : location.pathname.startsWith(`/${id}`);
+
+    const getPath = (id) => id === "index" ? "/" : `/${id}`;
 
     //state for nav menu opening once index is selected
     const [menuOpen, setMenuOpen] = useState(true);
@@ -120,7 +131,6 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
             if (!menuOpen && secondaryNavItems.length > 0) {
                 event.preventDefault();
                 setMenuOpen(true);
-                setHasSelected(true);
                 setAllowAutoFocus(true);
                 setFocusIndex(1);
                 return;
@@ -151,9 +161,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                     >
                         <button
                             type="button"
-                            className={
-                                `${hasSelected ? (active === primaryNavItem.id ? null : "item-unfocus") : null}`
-                            }
+                            className={isActive(primaryNavItem.id) ? null : "item-unfocus"}
                             aria-expanded={menuOpen}
                             aria-controls="nav-secondary-items"
                             tabIndex={focusIndex === 0 ? 0 : -1}
@@ -161,9 +169,8 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                             ref={(el) => { buttonRefs.current[0] = el; }}
                             onKeyDown={(event) => handleArrowNavigation(event, 0)}
                             onClick={() => {
-                                onSelect(primaryNavItem.id);
+                                navigate(getPath(primaryNavItem.id));
                                 setMenuOpen(true);
-                                setHasSelected(true);
                             }}
                         >
                             {primaryNavItem.label}
@@ -175,17 +182,15 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                             key={item.id}
                             className={"hoverable"}
                         >
-                            <button className={
-                                `${hasSelected ? (active === item.id ? null : "item-unfocus") : null}`
-                            }
+                            <button className={isActive(item.id) ? null : "item-unfocus"}
                             type="button"
-                            aria-current={active === item.id ? "page" : undefined}
+                            aria-current={isActive(item.id) ? "page" : undefined}
                             tabIndex={focusIndex === index + 1 ? 0 : -1}
                             data-nav-button={index + 1}
                             ref={(el) => { buttonRefs.current[index + 1] = el; }}
                             onKeyDown={(event) => handleArrowNavigation(event, index + 1)}
                             onClick={() => {
-                                onSelect(item.id);
+                                navigate(getPath(item.id));
                             }}
                             >
                                 {item.label}
@@ -193,7 +198,7 @@ export default function Nav({ active, onSelect, hasSelected, setHasSelected, lan
                         </li>
                     ))}
                 </ul>
-            
+
        </nav>
     )
 }

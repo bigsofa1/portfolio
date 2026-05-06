@@ -2,6 +2,7 @@ import groq from 'groq'
 
 export const PROJECTS_QUERY = groq`*[_type == "project"] | order(publishDate desc){
   _id,
+  "slug": slug.current,
   publishDate,
   figmaUrl,
   designTypes[]->{title, titleFr, "key": value.current},
