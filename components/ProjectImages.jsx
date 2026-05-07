@@ -248,7 +248,7 @@ export default function ProjectImages({images = [], language = "en"}) {
                         }}
                         aria-label={language === "fr" ? "Image précédente" : "Show previous image"}
                     >
-                        &lt;
+                        <img src="/images/icons/arrow_left.svg" alt="" aria-hidden="true" />
                     </button>
                     <button
                         type="button"
@@ -259,7 +259,7 @@ export default function ProjectImages({images = [], language = "en"}) {
                         }}
                         aria-label={language === "fr" ? "Image suivante" : "Show next image"}
                     >
-                        &gt;
+                        <img src="/images/icons/arrow_right.svg" alt="" aria-hidden="true" />
                     </button>
                     <button
                         type="button"
@@ -271,7 +271,7 @@ export default function ProjectImages({images = [], language = "en"}) {
                         ref={closeButtonRef}
                         aria-label={closeLabel}
                     >
-                        {language === "fr" ? "Fermer" : "Close"}
+                        <img src="/images/icons/x.svg" alt="" aria-hidden="true" />
                     </button>
                 </figure>
             )}

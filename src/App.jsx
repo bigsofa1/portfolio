@@ -9,6 +9,7 @@ import { Routes, Route } from 'react-router-dom';
 function App() {
   const [language, setLanguage] = useState("en")
   console.log("Design & Technology by Thomas Chap Vinette");
+  
 
   return (
     <main className="layout">
