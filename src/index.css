@@ -147,11 +147,11 @@ figure{
   cursor: pointer;
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
   .image-focus img {
     max-height: 54%;
   }
-}
+} */
 
 .image-focus__thumbs-row{
   position: absolute;
