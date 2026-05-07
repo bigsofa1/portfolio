@@ -249,7 +249,7 @@ export default function ProjectImages({images = [], language = "en"}) {
                         ref={closeButtonRef}
                         aria-label={closeLabel}
                     >
-                        <img src="/images/icons/x.svg" alt="" aria-hidden="true" />
+                        <img src="/icons/x.svg" alt="" aria-hidden="true" />
                     </button>
                     <div className="image-focus-btn-group" onClick={(e) => e.stopPropagation()}>
                         <button
@@ -261,7 +261,7 @@ export default function ProjectImages({images = [], language = "en"}) {
                             }}
                             aria-label={language === "fr" ? "Image précédente" : "Show previous image"}
                         >
-                            <img src="/images/icons/arrow_left.svg" alt="" aria-hidden="true" />
+                            <img src="/icons/arrow_left.svg" alt="" aria-hidden="true" />
                         </button>
                         <button
                             type="button"
@@ -272,7 +272,7 @@ export default function ProjectImages({images = [], language = "en"}) {
                             }}
                             aria-label={language === "fr" ? "Image suivante" : "Show next image"}
                         >
-                            <img src="/images/icons/arrow_right.svg" alt="" aria-hidden="true" />
+                            <img src="/icons/arrow_right.svg" alt="" aria-hidden="true" />
                         </button>
                     </div>
                 </figure>
