@@ -241,29 +241,7 @@ export default function ProjectImages({images = [], language = "en"}) {
                     />
                     <button
                         type="button"
-                        className="hoverable image-focus-btn-prev"
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            showPrev()
-                        }}
-                        aria-label={language === "fr" ? "Image précédente" : "Show previous image"}
-                    >
-                        <img src="/images/icons/arrow_left.svg" alt="" aria-hidden="true" />
-                    </button>
-                    <button
-                        type="button"
-                        className="hoverable image-focus-btn-next"
-                        onClick={(e) => {
-                            e.stopPropagation()
-                            showNext()
-                        }}
-                        aria-label={language === "fr" ? "Image suivante" : "Show next image"}
-                    >
-                        <img src="/images/icons/arrow_right.svg" alt="" aria-hidden="true" />
-                    </button>
-                    <button
-                        type="button"
-                        className="hoverable image-focus-btn-exit"
+                        className="hoverable btn-hoverable image-focus-btn-exit"
                         onClick={(e) => {
                             e.stopPropagation()
                             closeImage()
@@ -273,6 +251,30 @@ export default function ProjectImages({images = [], language = "en"}) {
                     >
                         <img src="/images/icons/x.svg" alt="" aria-hidden="true" />
                     </button>
+                    <div className="image-focus-btn-group" onClick={(e) => e.stopPropagation()}>
+                        <button
+                            type="button"
+                            className="hoverable btn-hoverable image-focus-btn-prev"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                showPrev()
+                            }}
+                            aria-label={language === "fr" ? "Image précédente" : "Show previous image"}
+                        >
+                            <img src="/images/icons/arrow_left.svg" alt="" aria-hidden="true" />
+                        </button>
+                        <button
+                            type="button"
+                            className="hoverable btn-hoverable image-focus-btn-next"
+                            onClick={(e) => {
+                                e.stopPropagation()
+                                showNext()
+                            }}
+                            aria-label={language === "fr" ? "Image suivante" : "Show next image"}
+                        >
+                            <img src="/images/icons/arrow_right.svg" alt="" aria-hidden="true" />
+                        </button>
+                    </div>
                 </figure>
             )}
 

@@ -135,7 +135,7 @@ figure{
   justify-content: center;
   align-items: center;
   z-index: 2;
-  cursor: pointer;
+  cursor: default;
   overflow: hidden;
   overscroll-behavior: contain;
 }
@@ -144,6 +144,9 @@ figure{
   max-width: 90%;
   max-height: 63%;
   object-fit: contain;
+}
+
+.image-focus .project-image {
   cursor: pointer;
 }
 
@@ -231,23 +234,34 @@ figure{
 .image-focus-btn-exit,
 .image-focus-btn-prev,
 .image-focus-btn-next {
-  position: absolute;
-  bottom: var(--gutter);
   display: flex;
   align-items: center;
   line-height: 1;
 }
 
-.image-focus-btn-exit { right: calc(var(--gutter) * 3); }
-.image-focus-btn-prev { left: var(--gutter); }
-.image-focus-btn-next { right: var(--gutter); }
+.image-focus-btn-exit {
+  position: absolute;
+  bottom: var(--gutter);
+  left: var(--gutter);
+  z-index: 10;
+}
+
+.image-focus-btn-group {
+  position: absolute;
+  bottom: var(--gutter);
+  right: var(--gutter);
+  display: flex;
+  align-items: center;
+  gap: var(--gutter);
+  z-index: 10;
+}
 
 .image-focus-btn-exit img,
 .image-focus-btn-prev img,
 .image-focus-btn-next img {
   display: block;
-  width: 18px;
-  height: 18px;
+  width: 20.7px;
+  height: 20.7px;
 }
 
 @media (max-width: 768px) {
@@ -292,10 +306,8 @@ figure{
   display:none;
 }
 
-.project-images-list--carousel::before,
-.project-images-list--carousel::after{
-  content:"";
-  flex:0 0 var(--gutter);
+.project-images-list--carousel{
+  gap: var(--gutter);
 }
 
 .project-images-carousel{
@@ -322,16 +334,23 @@ figure{
 }
 
 .project-figure{
-    flex: 0 0 clamp(14rem, 40vw, 20rem);
+    flex: 0 0 auto;
     scroll-snap-align: start;
     flex-direction: column;
     max-height: clamp(14rem, 40vw, 20rem);
-    width: clamp(14rem, 40vw, 20rem);
     display: flex;
 }
 
 .project-figure--carousel{
   height: clamp(14rem, 40vw, 20rem);
+}
+
+.project-figure--carousel .project-image {
+  height: 100%;
+  width: auto;
+  max-width: none;
+  max-height: 100%;
+  flex: none;
 }
 
 .project-image {
@@ -374,6 +393,16 @@ button:focus-visible {
   color: color-mix(in srgb, var(--base-color-dark), black 25%);
   transform: scale(1.02);
   opacity: 1;
+}
+
+.btn-hoverable {
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+}
+
+.btn-hoverable:hover {
+  transform: scale(1.2);
+  opacity: 0.6;
 }
 
 button:hover{
